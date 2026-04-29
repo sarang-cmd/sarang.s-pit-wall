@@ -39,6 +39,7 @@ const KEYWORDS = [
 
 function decodeEntities(input) {
   return String(input || '')
+    .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')

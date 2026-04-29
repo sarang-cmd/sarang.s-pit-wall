@@ -85,6 +85,32 @@
 </head>
 <body>
 
+<!-- Loading bar like YouTube -->
+<div id="loadingBar"></div>
+
+<!-- News Desk Modal -->
+<div id="newsModal" class="news-modal">
+  <div class="news-modal-content">
+    <div class="news-modal-header">
+      <h2>Latest F1 News</h2>
+      <button class="news-modal-close" onclick="closeNewsModal()">×</button>
+    </div>
+    <div class="news-modal-body">
+      <div id="newsModalContent">
+        <div class="loading">
+          <div class="loading-card"></div>
+          <div class="loading-card"></div>
+          <div class="loading-card"></div>
+        </div>
+      </div>
+    </div>
+    <div class="news-modal-footer">
+      <div class="pagination-info" id="newsModalPaginationInfo">Loading...</div>
+      <a href="/news" class="btn ghost" target="_blank">View All 500 Articles</a>
+    </div>
+  </div>
+</div>
+
 <div class="ticker-wrap">
   <div class="ticker-track" id="tkTrack"></div>
 </div>
@@ -332,7 +358,7 @@
           <div class="col-name">📰 Paddock <em>Intel</em></div>
           <div class="col-sub">Latest 4 · Scrollable preview</div>
         </div>
-        <a class="news-view-all" href="news">View all</a>
+        <button class="news-view-all" onclick="openNewsModal()" style="background:none; border:none; cursor:pointer;">View all</button>
       </div>
 
       <div class="podium-block">

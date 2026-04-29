@@ -652,3 +652,212 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
     });
   }
 })();
+
+/* ============= LOADING BAR (YouTube-style) ============= */
+function showLoadingBar() {
+  const bar = document.getElementById('loadingBar');
+  if (!bar) return;
+  bar.classList.add('active');
+  bar.style.width = '10%';
+  let progress = 10;
+  const interval = setInterval(() => {
+    progress += Math.random() * 30;
+    if (progress > 90) progress = 90;
+    bar.style.width = progress + '%';
+  }, 200);
+  window._loadingBarInterval = interval;
+}
+
+function hideLoadingBar() {
+  const bar = document.getElementById('loadingBar');
+  if (!bar) return;
+  if (window._loadingBarInterval) clearInterval(window._loadingBarInterval);
+  bar.style.width = '100%';
+  setTimeout(() => {
+    bar.classList.remove('active');
+    bar.style.width = '0%';
+  }, 500);
+}
+
+/* ============= NEWS MODAL ============= */
+function openNewsModal() {
+  showLoadingBar();
+  const modal = document.getElementById('newsModal');
+  if (modal) {
+    modal.classList.add('active');
+    fetchNewsModalContent();
+  }
+}
+
+function closeNewsModal() {
+  const modal = document.getElementById('newsModal');
+  if (modal) modal.classList.remove('active');
+  hideLoadingBar();
+}
+
+let modalNewsArticles = [];
+let modalNewsPage = 1;
+
+async function fetchNewsModalContent() {
+  try {
+    const PROXY_URL = window.__NEWS_PROXY_URL__ || 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
+    const response = await fetch(PROXY_URL + '&limit=50', { cache: 'no-store' });
+    const data = await response.json();
+    modalNewsArticles = (data.articles || []).slice(0, 50);
+    renderNewsModalPage(1);
+  } catch (e) {
+    console.error('Error fetching modal news:', e);
+  } finally {
+    hideLoadingBar();
+  }
+}
+
+function renderNewsModalPage(page) {
+  const itemsPerPage = 15;
+  const start = (page - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageItems = modalNewsArticles.slice(start, end);
+  const totalPages = Math.ceil(modalNewsArticles.length / itemsPerPage);
+  modalNewsPage = page;
+
+  const container = document.getElementById('newsModalContent');
+  if (!container) return;
+
+  container.innerHTML = `
+    <div style="padding: 16px;">
+      ${pageItems.map((a, i) => `
+        <a href="${a.link || '#'}" target="_blank" rel="noopener noreferrer" style="display: grid; grid-template-columns: 120px 1fr; gap: 12px; padding: 12px; border: 1px solid rgba(10,10,10,0.14); margin-bottom: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease;" onmouseover="this.style.borderColor='rgba(10,10,10,0.26)'" onmouseout="this.style.borderColor='rgba(10,10,10,0.14)'">
+          <div style="min-height: 80px; background: linear-gradient(135deg, rgba(225,6,0,0.25), rgba(10,10,10,0.75)); border: 1px solid rgba(10,10,10,0.2); overflow: hidden;">
+            ${a.image ? `<img src="${a.image}" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;\\'>📰</div>'">` : '<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">📰</div>'}
+          </div>
+          <div style="min-width: 0;">
+            <div style="font-size: 10px; color: #8a8172; margin-bottom: 4px; font-family: 'JetBrains Mono';">${a.source || 'Unknown'}</div>
+            <h4 style="margin: 0 0 6px; font-size: 14px; line-height: 1.3; font-weight: 700;">${a.title}</h4>
+            <p style="margin: 0; font-size: 12px; color: #4a4438; line-height: 1.4;">${a.summary || ''}</p>
+            <div style="margin-top: 8px; font-size: 10px; color: #e10600; font-family: 'JetBrains Mono';">Read →</div>
+          </div>
+        </a>
+      `).join('')}
+    </div>
+    <div class="pagination" style="gap: 6px;">
+      ${totalPages > 1 ? Array.from({length: Math.min(totalPages, 5)}, (_, i) => {
+        const pageNum = i + 1;
+        const isActive = pageNum === page ? ' active' : '';
+        return `<button class="pagination-button${isActive}" onclick="renderNewsModalPage(${pageNum})"> ${pageNum} </button>`;
+      }).join('') : ''}
+      <div class="pagination-info">Page ${page} of ${totalPages} • ${modalNewsArticles.length} articles</div>
+    </div>
+  `;
+
+  document.getElementById('newsModalPaginationInfo').textContent = `Page ${page} of ${totalPages}`;
+}
+
+/* ============= YOUTUBE INTEGRATION ============= */
+const RACING_CHANNELS = [
+  { name: 'Formula 1', id: 'UCB_qr75Oy' },
+  { name: 'Sky Sports F1', id: 'UC0DMrwVWSzFEW78UjeZO-ZQ' },
+  { name: 'ESPN F1', id: 'UC-_qhCiSj20rk1-gLnbqsjQ' },
+  { name: 'Motorsport.com', id: 'UCksvEz_qVrpW2_8-s_7TvhA' },
+  { name: 'RacingNews365', id: 'UCn0QtvQdcQJz5xQNaLyLLEg' }
+];
+
+const F1_YOUTUBERS = [
+  { name: 'Senna Bracket', id: 'UCpg8JHQMvlrXJBCE_fB8gEw' },
+  { name: 'Jimmy Broadbent', id: 'UCqH-8cI80G_R_aeVA5N8k0g' },
+  { name: 'TomBlackF1', id: 'UC2lnHVBHGz7d3cLV3-SHQ8g' },
+  { name: 'Tiametmarduk', id: 'UCV1qs8fgvMBCr0hbhFGZeOg' },
+  { name: 'Formula Craic', id: 'UCpqILBKDiSO0lnF9RxmFyxw' },
+  { name: 'Driver61', id: 'UCEgEiHVp1qxqmLKhsKfb-9w' },
+  { name: 'TheBrainF1', id: 'UCnPkzRMjKNwQ4dW0_8xHZRQ' },
+  { name: 'Speed Champions', id: 'UC-fI01AaxyMyBZoxLWLAEgg' },
+  { name: 'Matt Button', id: 'UCdw1eTfZH_0p8KLwHwzJIvg' },
+  { name: 'WTF1', id: 'UCs7nPQIEba0We2-qaCzXcMw' }
+];
+
+async function fetchYouTubeVideos(channelList, sectionId, title) {
+  try {
+    const videos = [];
+    
+    for (const channel of channelList.slice(0, 4)) {
+      try {
+        // Using YouTube's public feed (no API key needed)
+        const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel.id}`;
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`);
+        const data = await response.json();
+        
+        if (data.contents) {
+          const dom = new DOMParser().parseFromString(data.contents, 'text/xml');
+          const entries = dom.querySelectorAll('entry');
+          entries.forEach((entry, i) => {
+            if (i < 2) {
+              const title = entry.querySelector('title')?.textContent || 'Untitled';
+              const link = entry.querySelector('link')?.getAttribute('href') || '#';
+              const thumbnail = entry.querySelector('media\\:thumbnail')?.getAttribute('url') || '';
+              videos.push({
+                title: title.substring(0, 60),
+                channel: channel.name,
+                link: link,
+                thumbnail: thumbnail
+              });
+            }
+          });
+        }
+      } catch (e) {
+        console.log(`Skipping channel ${channel.name}`);
+      }
+    }
+    
+    renderYouTubeSection(videos, sectionId, title);
+  } catch (e) {
+    console.error('YouTube fetch error:', e);
+  }
+}
+
+function renderYouTubeSection(videos, sectionId, title) {
+  const container = document.getElementById(sectionId);
+  if (!container || videos.length === 0) return;
+  
+  container.innerHTML = `
+    <div class="youtube-section">
+      <h3 class="youtube-title">${title}</h3>
+      <div class="youtube-grid">
+        ${videos.map(v => `
+          <a href="${v.link}" target="_blank" rel="noopener noreferrer" class="youtube-card">
+            <div class="youtube-thumb">
+              ${v.thumbnail ? `<img src="${v.thumbnail}" alt="${v.title}">` : '<div style="background: rgba(225,6,0,0.25); width:100%; height:100%;"></div>'}
+              <div class="youtube-play">▶</div>
+            </div>
+            <div class="youtube-info">
+              <div class="youtube-channel">${v.channel}</div>
+              <h4 class="youtube-name">${v.title}</h4>
+            </div>
+          </a>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/* ============= INITIALIZE MODAL & YOUTUBE ============= */
+(function() {
+  // Close modal when clicking outside
+  const modal = document.getElementById('newsModal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeNewsModal();
+    });
+    // Keyboard close (ESC)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) closeNewsModal();
+    });
+  }
+
+  // Fetch YouTube videos on page load (but not immediately to avoid blocking)
+  setTimeout(() => {
+    const racingContainer = document.getElementById('youtubeRacing');
+    const youtubersContainer = document.getElementById('youtubeYoutubers');
+    
+    if (racingContainer) fetchYouTubeVideos(RACING_CHANNELS, 'youtubeRacing', '🎬 Latest Racing Videos');
+    if (youtubersContainer) fetchYouTubeVideos(F1_YOUTUBERS, 'youtubeYoutubers', '⭐ Top F1 Creators');
+  }, 2000);
+})();
