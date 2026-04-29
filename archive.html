@@ -114,6 +114,11 @@
       padding: 20px;
       transition: all 0.3s ease;
       animation: slideInCard 0.5s ease-out both;
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
     }
 
     @keyframes slideInCard {
@@ -124,6 +129,11 @@
     .archive-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 8px 24px rgba(10,10,10,0.12);
+    }
+
+    .archive-card:focus-visible {
+      outline: 2px solid var(--racing);
+      outline-offset: 4px;
     }
 
     .archive-thumb {
@@ -168,9 +178,7 @@
       line-height: 1.6;
       color: var(--ink-2);
       margin-bottom: 14px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      max-height: calc(1.6em * 2);
       overflow: hidden;
     }
 
@@ -205,8 +213,9 @@
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 56px;
-      padding-top: 36px;
+      padding: 22px 18px 0;
       border-top: 1px solid var(--rule);
+      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
       animation: fadeIn 0.6s ease-out both 0.3s;
     }
 
@@ -219,46 +228,57 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 42px;
-      height: 42px;
-      padding: 0 14px;
+      min-width: 46px;
+      height: 46px;
+      padding: 0 16px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 600;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      border: 1px solid rgba(10,10,10,0.18);
-      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(242,236,224,0.92));
+      border: 1px solid rgba(10,10,10,0.16);
+      background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(242,236,224,0.95));
       color: var(--ink);
       cursor: pointer;
       text-decoration: none;
       border-radius: 999px;
-      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 8px 18px rgba(10,10,10,0.08);
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .page-chip:hover:not(.active) {
       transform: translateY(-1px);
       border-color: var(--racing);
       color: var(--racing);
+      box-shadow: 0 12px 24px rgba(10,10,10,0.12);
     }
 
     .page-chip.active {
-      background: var(--ink);
+      background: linear-gradient(135deg, var(--ink), #24201b);
       color: var(--paper);
       border-color: var(--ink);
-      box-shadow: 0 10px 24px rgba(10,10,10,0.16);
+      box-shadow: 0 14px 28px rgba(10,10,10,0.18);
     }
 
     .page-chip.nav {
       background: linear-gradient(180deg, rgba(10,10,10,0.94), rgba(10,10,10,0.82));
       color: var(--paper);
       border-color: var(--ink);
-      padding-inline: 16px;
+      padding-inline: 18px;
+      letter-spacing: 0.16em;
     }
 
     .page-chip.nav:hover {
       background: var(--racing);
       color: #fff;
+
+    .page-gap {
+      color: var(--ink-3);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      padding: 0 4px;
+    }
       border-color: var(--racing);
     }
 
@@ -452,7 +472,7 @@ function renderArchive(articles) {
 
   // Render articles
   archiveGrid.innerHTML = pageArticles.map((article, idx) => `
-    <div class="archive-card" style="animation-delay: ${idx * 0.05}s;">
+    <a class="archive-card" href="${escapeHtml(article.url)}" target="_blank" rel="noopener noreferrer" style="animation-delay: ${idx * 0.05}s;">
       <div class="archive-thumb">
         ${article.image ? `<img src="${escapeHtml(article.image)}" alt="${escapeHtml(article.title)}" loading="lazy">` : '<div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(225,6,0,0.2),rgba(10,10,10,0.1));"></div>'}
       </div>
@@ -463,7 +483,7 @@ function renderArchive(articles) {
         <span class="archive-source">${escapeHtml(article.source)}</span>
         <span>${timeAgo(article.publishedAt)}</span>
       </div>
-    </div>
+    </a>
   `).join('');
 
   // Render pagination (Google-style)
@@ -490,7 +510,7 @@ function renderArchive(articles) {
     const prevBtn = document.createElement('a');
     prevBtn.href = `?page=${currentPage - 1}`;
     prevBtn.className = 'page-chip nav';
-    prevBtn.textContent = '← Earlier';
+    prevBtn.textContent = '← Previous';
     pagination.appendChild(prevBtn);
   }
 
@@ -506,8 +526,10 @@ function renderArchive(articles) {
       if (num !== currentPage) {
         btn.href = `?page=${num}`;
         btn.setAttribute('aria-label', `Open page ${num}`);
+      } else {
+        btn.setAttribute('aria-current', 'page');
       }
-      btn.textContent = `#${String(num).padStart(2, '0')}`;
+      btn.textContent = `L${String(num).padStart(2, '0')}`;
       pagination.appendChild(btn);
     }
   });
@@ -516,7 +538,7 @@ function renderArchive(articles) {
     const nextBtn = document.createElement('a');
     nextBtn.href = `?page=${currentPage + 1}`;
     nextBtn.className = 'page-chip nav';
-    nextBtn.textContent = 'Later →';
+    nextBtn.textContent = 'Next →';
     pagination.appendChild(nextBtn);
   }
 }

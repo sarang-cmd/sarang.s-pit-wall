@@ -1862,6 +1862,32 @@ body.colo-open { overflow: hidden; }
   font-size: 24px;
 }
 
+    .youtube-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--paper);
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 34%),
+        radial-gradient(circle at bottom left, rgba(212,160,23,0.2), transparent 30%),
+        linear-gradient(135deg, rgba(225,6,0,0.28), rgba(10,10,10,0.9));
+    }
+
+    .youtube-fallback small {
+      display: block;
+      margin-top: 6px;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      color: rgba(242,236,224,0.78);
+    }
+
 .youtube-thumbnail img {
   width: 100%;
   height: 100%;
@@ -2360,7 +2386,7 @@ body.intel-open { overflow: hidden; }
         <article class="news-item neutral">
           <div class="news-meta"><span class="news-kicker">Engine Wars</span><span class="news-num">02</span></div>
           <h3 class="news-headline">Red Bull's new PU is down 15hp to Mercedes, paddock sources say</h3>
-          <p class="news-body">Despite the full Ford works programme, Red Bull's 2026 power unit appears weakest on the grid. Verstappen's P5 in Japan came from chassis, not pace.</p>
+          <p class="news-body">Despite the full Ford works programme, Red Bull's 2026 power unit appears weakest on the grid. Verstappen's P5 came from chassis, not raw pace.</p>
         </article>
         <article class="news-item neutral">
           <div class="news-meta"><span class="news-kicker">Debut</span><span class="news-num">03</span></div>
@@ -2382,24 +2408,24 @@ body.intel-open { overflow: hidden; }
 <section class="golive-section">
   <div style="max-width: 1440px; margin: 0 auto; padding: 56px 36px;">
     <div style="margin-bottom: 40px;">
-      <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; color: var(--ink); margin-bottom: 8px;">🎬 Season <em style="color: var(--racing); font-style: italic;">Moments</em></h2>
-      <p style="font-size: 14px; color: var(--ink-2); max-width: 70ch; line-height: 1.6;">The most iconic overtakes, celebrations, and turning points from the 2026 season so far.</p>
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; color: var(--ink); margin-bottom: 8px;">📰 Live <em style="color: var(--racing); font-style: italic;">Briefing</em></h2>
+      <p style="font-size: 14px; color: var(--ink-2); max-width: 70ch; line-height: 1.6;">The three things worth watching right now: the title fight, the technical picture, and the stories that could move the grid next.</p>
     </div>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
       <div style="background: var(--carbon); color: white; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; height: 200px;">
-        <div style="font-size: 48px; margin-bottom: 12px;">🏁</div>
-        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Antonelli's Breakout</div>
-        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Back-to-back wins as a rookie</div>
+        <div style="font-size: 48px; margin-bottom: 12px;">📈</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Championship Watch</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Antonelli, Russell, and Leclerc are already splitting the title picture</div>
       </div>
       <div style="background: var(--carbon); color: white; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; height: 200px;">
-        <div style="font-size: 48px; margin-bottom: 12px;">⚡</div>
-        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Power Unit Wars</div>
-        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Mercedes leads engine performance</div>
+        <div style="font-size: 48px; margin-bottom: 12px;">⚙️</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Tech Pulse</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Updated floor, wing, and power-unit notes are shaping the next upgrade race</div>
       </div>
       <div style="background: var(--carbon); color: white; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; height: 200px;">
-        <div style="font-size: 48px; margin-bottom: 12px;">🎯</div>
-        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Tactical Mastery</div>
-        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Strategic pit stops & tire management</div>
+        <div style="font-size: 48px; margin-bottom: 12px;">🗞️</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Paddock Noise</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Driver market whispers and FIA chatter are building in the background</div>
       </div>
     </div>
   </div>
@@ -2416,7 +2442,7 @@ body.intel-open { overflow: hidden; }
     <div class="stat">
       <div class="stat-label">Fastest Lap 2026</div>
       <div class="stat-big">1:28.411</div>
-      <div class="stat-sub">Russell · Japan Q3</div>
+      <div class="stat-sub">Russell · Qualifying</div>
     </div>
     <div class="stat">
       <div class="stat-label">Fastest Pit Stop</div>
@@ -2466,7 +2492,7 @@ body.intel-open { overflow: hidden; }
         </div>
         <p class="intel-sub">A compact preview of the latest stories. Open the full backlog when you are ready.</p>
       </header>
-      <iframe class="intel-frame" src="old-version/old/news.html" title="Paddock Intel preview"></iframe>
+      <iframe class="intel-frame" src="news.html" title="Paddock Intel preview"></iframe>
       <div class="intel-footer">
         <span class="intel-note">Same dashboard, fuller log.</span>
         <div class="intel-actions">
@@ -2654,7 +2680,7 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
     wdc: { val: 'ANTONELLI', pts: '72 pts' },
     wcc: { val: 'MERCEDES', pts: '135 pts' },
     next: { val: 'MIAMI GP', pts: 'MAY 3' },
-    winner: { val: 'ANTONELLI', pts: 'JAPAN' },
+    winner: { val: 'ANTONELLI', pts: 'RACE WINNER' },
     fl: { val: 'RUSSELL', pts: '1:28.411' },
     fastPit: { val: 'MCLAREN', pts: '1.94s' },
     ver: { val: '−60', pts: 'P9' },
@@ -2857,6 +2883,7 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
 
   function venueForRace(race){
     const circuitName = race?.Circuit?.circuitName || '';
+    if (circuitName === 'Suzuka Circuit') return 'Race Week';
     return CIRCUIT_LABELS[circuitName] || circuitName.replace(/\s+(Grand Prix Circuit|International Circuit|International Autodrome|Street Circuit|Street Circuit|Circuit|Ring|Motor Speedway)$/i, '').trim() || race?.raceName || 'Race';
   }
 
@@ -2942,13 +2969,14 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
       const winnerHtml = isDone && result?.winner ? `<div class="cal-winner">${escapeHtml(formatWinner(result.winner))}</div>` : '';
       const flag = flagForCountry(race.Circuit?.Location?.country || '');
       const venue = escapeHtml(venueForRace(race));
-      const country = escapeHtml(race.Circuit?.Location?.country || '');
+      const rawCountry = race.Circuit?.Location?.country || '';
+      const country = escapeHtml(rawCountry === 'Japan' ? 'Round 03' : rawCountry);
       const dateText = escapeHtml(formatWeekend(race));
 
       return `
         <div class="cal-round ${statusClass}">
           <div class="cal-rnum">${roundText}<span class="cal-status-dot"></span></div>
-          <div class="cal-flag-emoji">${flag}</div>
+          <div class="cal-flag-emoji">${rawCountry === 'Japan' ? '🏁' : flag}</div>
           <div class="cal-country">${country}</div>
           <div class="cal-flag-name">${venue}</div>
           <div class="cal-date">${dateText}</div>
@@ -3162,15 +3190,16 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
     driverContainer.innerHTML = list.map((driver, index) => {
       const teamName = driverTeam(driver);
       const teamColor = teamColorFor(teamName);
-      const position = String(driver.position || index + 1).padStart(2, '0');
+      const positionValue = Number(driver.position || index + 1);
+      const position = String(positionValue).padStart(2, '0');
       const name = escapeHtml(driverName(driver));
       const team = escapeHtml(teamName);
       const code = escapeHtml(driverCode(driver));
       const country = escapeHtml((driver.Driver && driver.Driver.nationality) || '');
       let posClass = '';
-      if (index === 0) posClass = ' leader';
-      else if (index === 1) posClass = ' p2';
-      else if (index === 2) posClass = ' p3';
+      if (positionValue === 1) posClass = ' leader';
+      else if (positionValue === 2) posClass = ' p2';
+      else if (positionValue === 3) posClass = ' p3';
       return `
         <div class="driver-row${posClass}" style="--team-color: ${teamColor}; animation-delay:${4.5 + index * 0.06}s;">
           <div class="driver-pos">${position}</div>
@@ -3368,9 +3397,11 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
   ];
 
   const createVideoCard = (video) => `
-    <a class="youtube-card" href="${escapeHtml(video.link)}" target="_blank" rel="noopener noreferrer">
+    <a class="youtube-card" href="${escapeHtml(video.link || `https://www.youtube.com/results?search_query=${encodeURIComponent(`${video.channel || ''} ${video.title || ''}`.trim())}`)}" target="_blank" rel="noopener noreferrer">
       <div class="youtube-thumbnail">
-        ${video.thumbnail ? `<img src="${escapeHtml(video.thumbnail)}" alt="${escapeHtml(video.title)}" loading="lazy" decoding="async">` : '<div style="background: rgba(225,6,0,0.25); width:100%; height:100%;"></div>'}
+        ${String(video.thumbnail || '').match(/^https?:\/\//i)
+          ? `<img src="${escapeHtml(video.thumbnail)}" alt="${escapeHtml(video.title)}" loading="lazy" decoding="async">`
+          : `<div class="youtube-fallback">${escapeHtml(video.thumbnail || '▶')}<small>${escapeHtml(video.channel || 'F1 Video')}</small></div>`}
         <div class="youtube-play-button">▶</div>
       </div>
       <div class="youtube-title">${escapeHtml(video.title)}</div>

@@ -889,7 +889,7 @@
         const age = timeAgo(item.publishedAt);
         const badges = [`<span class="badge">${escapeHtml(item.category || 'Paddock')}</span>`, `<span class="badge-soft">${escapeHtml(age)}</span>`];
         return `
-          <article class="article-card">
+          <article class="article-card" data-url="${escapeHtml(item.url)}" role="link" tabindex="0">
             ${thumbMarkup(item)}
             <div class="article-body">
               <div class="article-meta">
@@ -919,6 +919,23 @@
         }
 
         newsList.innerHTML = filtered.slice(0, ARTICLE_LIMIT).map(cardMarkup).join('');
+
+        newsList.querySelectorAll('.article-card').forEach((card) => {
+          const openArticle = () => {
+            const url = card.dataset.url;
+            if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          };
+          card.addEventListener('click', (event) => {
+            if (event.target.closest('a')) return;
+            openArticle();
+          });
+          card.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              openArticle();
+            }
+          });
+        });
       }
 
       function readCache() {
