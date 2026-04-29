@@ -887,6 +887,7 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
   letter-spacing: .18em;
   text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
   transition: transform 0.2s, background 0.2s, color 0.2s;
 }
 .news-view-all:hover {
@@ -1072,6 +1073,7 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
   border-bottom: 1px solid var(--rule-light);
   position: relative;
   transition: background 0.2s, padding-left 0.2s;
+  cursor: pointer;
 }
 .news-item:last-child { border-bottom: none; }
 .news-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--racing); transition: width 0.25s; }
@@ -1914,6 +1916,174 @@ body.colo-open { overflow: hidden; }
   margin-top: 10px;
 }
 
+/* --- Intel modal -------------------------------------------------- */
+
+.intel-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.intel-modal.open { opacity: 1; pointer-events: auto; }
+.intel-modal[hidden] { display: none; }
+body.intel-open { overflow: hidden; }
+
+.intel-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.76);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.intel-card {
+  position: relative;
+  width: min(1120px, 100%);
+  max-height: min(90vh, 980px);
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  overflow: hidden;
+  transform: translateY(14px) scale(0.985);
+  transition: transform 0.3s ease;
+}
+.intel-modal.open .intel-card { transform: translateY(0) scale(1); }
+.intel-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--carbon) 0 20px, var(--paper-2) 20px 40px);
+}
+.intel-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(10, 10, 10, 0.18);
+  color: var(--ink-2);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  z-index: 3;
+}
+.intel-close:hover {
+  background: var(--carbon);
+  color: var(--paper);
+  border-color: var(--carbon);
+}
+.intel-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.intel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: end;
+  padding: 28px 30px 18px;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+.intel-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--racing);
+  margin-bottom: 7px;
+}
+.intel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+}
+.intel-title em {
+  color: var(--racing);
+  font-style: italic;
+}
+.intel-sub {
+  max-width: 44ch;
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0;
+}
+.intel-frame {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  border: 0;
+  background: var(--paper);
+}
+.intel-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 16px 30px 22px;
+  border-top: 1px solid var(--rule);
+}
+.intel-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.intel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.intel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 15px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.intel-btn:hover { transform: translateY(-1px); background: var(--paper); color: var(--ink); }
+.intel-btn-ghost { background: transparent; color: var(--ink); }
+.intel-btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+@media (max-width: 760px) {
+  .intel-modal { padding: 14px; }
+  .intel-head, .intel-footer { padding-left: 16px; padding-right: 16px; }
+  .intel-title { font-size: 24px; }
+  .intel-sub { max-width: none; }
+}
+
 /* ================ END COLOPHON STYLES ====================== */
 </style>
 </head>
@@ -2059,12 +2229,12 @@ body.colo-open { overflow: hidden; }
         <div class="driver-info"><div class="driver-line"><span class="driver-name">K. Antonelli</span><span class="driver-code" style="background:var(--mercedes); color:#000;">ANT</span></div><div class="driver-team">Mercedes · ITA</div></div>
         <div class="driver-pts-wrap"><div class="driver-pts">72</div><div class="driver-pts-sub">pts</div></div>
       </div>
-      <div class="driver-row" style="--team-color: var(--mercedes); animation-delay:4.58s;">
+      <div class="driver-row p2" style="--team-color: var(--mercedes); animation-delay:4.58s;">
         <div class="driver-pos">02</div>
         <div class="driver-info"><div class="driver-line"><span class="driver-name">G. Russell</span><span class="driver-code" style="background:var(--mercedes); color:#000;">RUS</span></div><div class="driver-team">Mercedes · GBR · <span class="gap">−9</span></div></div>
         <div class="driver-pts-wrap"><div class="driver-pts">63</div><div class="driver-pts-sub">pts</div></div>
       </div>
-      <div class="driver-row" style="--team-color: var(--ferrari); animation-delay:4.66s;">
+      <div class="driver-row p3" style="--team-color: var(--ferrari); animation-delay:4.66s;">
         <div class="driver-pos">03</div>
         <div class="driver-info"><div class="driver-line"><span class="driver-name">C. Leclerc</span><span class="driver-code" style="background:var(--ferrari);">LEC</span></div><div class="driver-team">Ferrari · MON · <span class="gap">−23</span></div></div>
         <div class="driver-pts-wrap"><div class="driver-pts">49</div><div class="driver-pts-sub">pts</div></div>
@@ -2168,11 +2338,11 @@ body.colo-open { overflow: hidden; }
           <div class="col-name">📰 Paddock <em>Intel</em></div>
           <div class="col-sub">Latest 4 · Scrollable preview</div>
         </div>
-        <a class="news-view-all" href="archive.html">View all</a>
+        <button type="button" class="news-view-all" id="openIntelModal">View more</button>
       </div>
 
       <div class="podium-block">
-        <div class="podium-head" id="podiumHead">Japanese GP · Suzuka · Result</div>
+        <div class="podium-head" id="podiumHead">Latest podium result</div>
         <div class="podium-list" id="podiumList">
           <!-- Dynamically populated from API -->
         </div>
@@ -2248,7 +2418,7 @@ body.colo-open { overflow: hidden; }
     <div class="stat">
       <div class="stat-label">Fastest Pit Stop</div>
       <div class="stat-big">1.94<em>s</em></div>
-      <div class="stat-sub">McLaren · Japanese GP</div>
+      <div class="stat-sub">McLaren benchmark</div>
     </div>
     <div class="stat">
       <div class="stat-label">Verstappen Gap</div>
@@ -2280,6 +2450,30 @@ body.colo-open { overflow: hidden; }
     </div>
   </div>
 </section>
+
+<div class="intel-modal" id="intel-modal" role="dialog" aria-modal="true" aria-labelledby="intel-title" hidden>
+  <div class="intel-backdrop" data-close></div>
+  <div class="intel-card" role="document">
+    <button type="button" class="intel-close" aria-label="Close news preview">✕</button>
+    <div class="intel-shell">
+      <header class="intel-head">
+        <div>
+          <div class="intel-eyebrow">§ 03 · Preview</div>
+          <h2 class="intel-title" id="intel-title">Paddock <em>Intel</em></h2>
+        </div>
+        <p class="intel-sub">A compact preview of the latest stories. Open the full backlog when you are ready.</p>
+      </header>
+      <iframe class="intel-frame" src="old-version/old/news.html" title="Paddock Intel preview"></iframe>
+      <div class="intel-footer">
+        <span class="intel-note">Same dashboard, fuller log.</span>
+        <div class="intel-actions">
+          <a class="intel-btn intel-btn-ghost" href="archive.html">See full log</a>
+          <button type="button" class="intel-btn" data-close>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="footer-wrap">
   <footer class="footer">
@@ -2384,6 +2578,36 @@ body.colo-open { overflow: hidden; }
   </div>
 </div>
 <!-- END COLOPHON MODAL -->
+
+<script>
+(function(){
+  const modal = document.getElementById('intel-modal');
+  const openButtons = [document.getElementById('openIntelModal')].filter(Boolean);
+  const closeTargets = modal ? modal.querySelectorAll('[data-close]') : [];
+  const closeButton = modal && modal.querySelector('.intel-close');
+  if (!modal || !openButtons.length) return;
+
+  function open() {
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add('open'));
+    document.body.classList.add('intel-open');
+    if (closeButton) closeButton.focus();
+  }
+
+  function close() {
+    modal.classList.remove('open');
+    document.body.classList.remove('intel-open');
+    setTimeout(() => { modal.hidden = true; }, 280);
+  }
+
+  openButtons.forEach((button) => button.addEventListener('click', open));
+  closeButton && closeButton.addEventListener('click', close);
+  closeTargets.forEach((target) => target.addEventListener('click', close));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) close();
+  });
+})();
+</script>
 
 <script>
 (function(){
@@ -2853,7 +3077,7 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
       const age = formatNewsAge(item.publishedAt);
       const ageText = age ? `<span class="news-source">${escapeHtml(age)}</span>` : '<span class="news-source">Fresh</span>';
       return `
-        <article class="news-item ${leadClass}" data-url="${escapeHtml(item.url)}" style="cursor: pointer;">
+        <article class="news-item ${leadClass}" data-url="${escapeHtml(item.url)}" role="link" tabindex="0">
           <div class="news-meta">
             <span class="news-kicker">${escapeHtml(item.category || 'Paddock')}</span>
             <span class="news-num">${String(index + 1).padStart(2, '0')}</span>
@@ -2867,12 +3091,20 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
           </div>
         </article>`;
     }).join('');
-    // Add click handlers to open articles
-    document.querySelectorAll('.news-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        if (e.target.tagName !== 'A') {
-          const url = this.dataset.url;
-          if (url) window.open(url, '_blank');
+
+    newsBlock.querySelectorAll('.news-item').forEach((card) => {
+      const openArticle = () => {
+        const url = card.dataset.url;
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+      };
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('a')) return;
+        openArticle();
+      });
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openArticle();
         }
       });
     });
