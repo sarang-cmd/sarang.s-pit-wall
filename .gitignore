@@ -4,3 +4,6 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# archives
+old-version/
