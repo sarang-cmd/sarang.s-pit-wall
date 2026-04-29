@@ -1,4 +1,3 @@
-<style>
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 
 :root {
@@ -1755,10 +1754,8 @@ body.colo-open { overflow: hidden; }
   .colo-p-val { font-size: 18px; }
 }
 /* ================ END COLOPHON STYLES ====================== */
-</style>
 
 
-  <style>
     :root {
       --carbon: #0a0a0a;
       --carbon-2: #121212;
@@ -2520,4 +2517,3 @@ body.colo-open { overflow: hidden; }
       flex: 1 1 100%;
       text-align: center;
     }
-  </style>
