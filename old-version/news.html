@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pit Wall · F1 News Desk</title>
+  <meta name="description" content="Browse the latest Formula 1 news with filters, thumbnails, and a ranked feed from mainstream outlets." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <main class="page" id="top">
+    <section class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-kicker">The Pit Wall</div>
+          <div class="brand-title">F1 <em>News</em> Desk</div>
+          <div class="brand-sub">A curated feed from mainstream Formula 1 outlets, ranked to keep the list short and focused. The articles stay scrollable, but the noise does not.</div>
+        </div>
+        <div class="top-actions">
+          <a class="btn ghost" href="index.html">Back to dashboard</a>
+          <button class="btn" type="button" id="refreshBtn">Refresh stories</button>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="hero-panel">
+          <div class="eyebrow">Curated live feed</div>
+          <h1 class="hero-title">The strongest Formula 1 stories, <em>not</em> the loudest ones.</h1>
+          <p class="hero-copy">This page pulls from official and major F1 outlets, filters the feed for relevance, and uses Puter.js to rank the most interesting pieces first when the library is available. You get a compact scrollable list with thumbnails, source labels, and direct links back to the originals.</p>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-label">View</span>
+              <div class="stat-value" id="statShown">0</div>
+              <div class="stat-note">stories shown in the scroll area</div>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Sources</span>
+              <div class="stat-value" id="statSources">0</div>
+              <div class="stat-note">mainstream outlets in the mix</div>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Updated</span>
+              <div class="stat-value" id="statUpdated">--</div>
+              <div class="stat-note">last successful refresh</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="stats-panel">
+          <h2 class="panel-title">Source stack</h2>
+          <p class="panel-text">Official F1, BBC Sport, Sky Sports, RaceFans, PlanetF1, RacingNews365, Motorsport.com, The Race, The Athletic, and NewsNow.</p>
+          <div class="pulse-list" id="sourceStack"></div>
+        </aside>
+      </section>
+
+      <section class="filters-panel">
+        <div class="filters-top">
+          <div>
+            <h2 class="filters-title">Filter the grid</h2>
+            <p class="filters-sub">Use the chips to narrow the feed by category or source. Search is fuzzy and case-insensitive.</p>
+          </div>
+          <label class="search" aria-label="Search stories">
+            <span class="brand-kicker">Search</span>
+            <input id="searchInput" type="search" placeholder="Mercedes, penalty, upgrade, contract..." autocomplete="off">
+          </label>
+        </div>
+        <div class="chips" id="categoryChips"></div>
+        <div class="chips" id="sourceChips"></div>
+      </section>
+
+      <section class="list-panel">
+        <div class="list-top">
+          <div>
+            <h2 class="list-title">Latest stories</h2>
+            <div class="list-meta" id="listMeta">Loading the feed.</div>
+          </div>
+          <a class="btn ghost" href="#top">Back to top</a>
+        </div>
+        <div class="scroll-box">
+          <div class="article-list" id="newsList">
+            <div class="loading">
+              <div class="loading-card"></div>
+              <div class="loading-card"></div>
+              <div class="loading-card"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div><strong>The Pit Wall</strong> news desk</div>
+        <div id="footerText">Mainstream F1 sources only. Ranked, filtered, and kept short.</div>
+      </footer>
+    </section>
+  </main>
+
+  <script src="https://js.puter.com/v2/"></script>
+  <script>
+    window.__NEWS_PROXY_URL__ = 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
+  </script>
+  <script src="assets/js/news.js"></script>
+</body>
+</html>

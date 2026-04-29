@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pit Wall · News Archive · Full 500 Articles</title>
+  <meta name="description" content="Complete F1 news archive with 500+ articles and Google-style pagination." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --carbon: #0a0a0a;
+      --carbon-2: #131313;
+      --carbon-3: #1d1d1d;
+      --paper: #f2ece0;
+      --paper-2: #e8e1d2;
+      --paper-3: #d8d0bf;
+      --ink: #0a0a0a;
+      --ink-2: #4a4438;
+      --ink-3: #8a8172;
+      --racing: #e10600;
+      --racing-hot: #ff2010;
+      --rule: rgba(10,10,10,0.18);
+      --gold: #d4a017;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* YouTube loading bar */
+    .loading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--racing);
+      z-index: 10000;
+      animation: loadingBarAnimation 3.5s ease-out forwards;
+    }
+
+    @keyframes loadingBarAnimation {
+      0% { width: 0%; }
+      40% { width: 60%; }
+      100% { width: 100%; }
+    }
+
+    .header {
+      background: var(--carbon);
+      color: #fff;
+      padding: 40px 36px;
+      border-bottom: 4px solid var(--racing);
+      animation: fadeInHeader 0.8s ease-out both;
+    }
+
+    @keyframes fadeInHeader {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-back {
+      display: inline-block;
+      margin-bottom: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--racing-hot);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .header-back:hover { color: #fff; }
+
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .header-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 12px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 36px;
+    }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .archive-card {
+      background: var(--paper-2);
+      border: 1px solid var(--rule);
+      padding: 20px;
+      transition: all 0.3s ease;
+      animation: slideInCard 0.5s ease-out both;
+    }
+
+    @keyframes slideInCard {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .archive-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(10,10,10,0.12);
+    }
+
+    .archive-thumb {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(135deg, rgba(225,6,0,0.2), rgba(10,10,10,0.1));
+      border: 1px solid var(--rule);
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .archive-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .archive-category {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--racing);
+      color: #fff;
+      padding: 4px 8px;
+      margin-bottom: 10px;
+    }
+
+    .archive-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .archive-summary {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-2);
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .archive-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--ink-3);
+      border-top: 1px solid var(--rule);
+      padding-top: 12px;
+    }
+
+    .archive-source {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+
+    .archive-link {
+      color: var(--racing);
+      text-decoration: none;
+      border-bottom: 1px dashed currentColor;
+      transition: color 0.2s ease;
+    }
+
+    .archive-link:hover { color: var(--racing-hot); }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 56px;
+      padding-top: 36px;
+      border-top: 1px solid var(--rule);
+      animation: fadeIn 0.6s ease-out both 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .page-btn, .page-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .page-num { cursor: default; border: none; }
+
+    .page-btn:hover:not(:disabled) {
+      background: var(--ink);
+      color: var(--paper);
+      transform: translateY(-1px);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .page-num.active {
+      background: var(--racing);
+      color: #fff;
+      border-color: var(--racing);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 36px;
+      background: linear-gradient(135deg, rgba(225,6,0,0.05), rgba(10,10,10,0.02));
+      border: 2px dashed var(--rule);
+      margin: 40px 0;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .empty-state-text {
+      color: var(--ink-2);
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 32px 20px; }
+      .header { padding: 28px 20px; }
+      .archive-grid { grid-template-columns: 1fr; }
+      .pagination { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="loading-bar"></div>
+
+<header class="header">
+  <a href="index.html" class="header-back">← Back to Dashboard</a>
+  <h1 class="header-title">📰 News Archive</h1>
+  <p class="header-sub">Browse the complete F1 news backlog with 500+ articles · Curated from top sources</p>
+</header>
+
+<section class="container">
+  <div class="archive-grid" id="archiveGrid">
+    <!-- Populated by JavaScript -->
+  </div>
+
+  <div id="emptyState" style="display:none;" class="empty-state">
+    <div class="empty-state-icon">📡</div>
+    <h2 class="empty-state-title">Loading news archive...</h2>
+    <p class="empty-state-text">Fetching articles from the latest feeds. Please check back in a moment.</p>
+  </div>
+
+  <nav class="pagination" id="pagination"></nav>
+</section>
+
+<script>
+const ARCHIVE_CACHE_KEY = 'pw-news-archive-cache';
+const ARTICLES_PER_PAGE = 12;
+const PROXY_URL = 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
+
+function decodeHtmlEntities(text) {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function timeAgo(publishedAt) {
+  if (!publishedAt) return 'Fresh';
+  const published = new Date(publishedAt);
+  if (Number.isNaN(published.getTime())) return 'Fresh';
+  const minutes = Math.max(0, Math.round((Date.now() - published.getTime()) / 60000));
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  return `${days}d ago`;
+}
+
+async function fetchArchive() {
+  const archiveGrid = document.getElementById('archiveGrid');
+  const pagination = document.getElementById('pagination');
+  const emptyState = document.getElementById('emptyState');
+
+  try {
+    // Try to fetch fresh articles (up to 500)
+    let articles = [];
+    let page = 1;
+    let hasMore = true;
+
+    while (articles.length < 500 && hasMore && page <= 5) {
+      try {
+        const response = await fetch(PROXY_URL + `&page=${page}`, { cache: 'no-store' });
+        if (!response.ok) break;
+        const payload = await response.json();
+        const newArticles = (payload.articles || [])
+          .map((raw, idx) => ({
+            id: `${raw.url}|${raw.title}|${idx}`,
+            url: raw.url || raw.link || '#',
+            title: decodeHtmlEntities(raw.title || raw.headline || ''),
+            summary: decodeHtmlEntities(raw.summary || raw.description || ''),
+            source: raw.source || 'F1 News',
+            category: raw.category || 'Paddock',
+            publishedAt: raw.publishedAt || raw.pubDate || '',
+            image: raw.image || raw.thumbnail || ''
+          }))
+          .filter(item => item.title && item.url);
+        
+        articles = articles.concat(newArticles);
+        hasMore = newArticles.length > 0;
+        page += 1;
+      } catch { hasMore = false; }
+    }
+
+    if (!articles.length) {
+      // Fallback to cache
+      const cached = readArchiveCache();
+      articles = cached.articles || [];
+    }
+
+    if (articles.length) {
+      // Save to cache
+      writeArchiveCache(articles);
+      renderArchive(articles);
+    } else {
+      emptyState.style.display = 'block';
+    }
+  } catch (error) {
+    console.error('Archive fetch failed:', error);
+    const cached = readArchiveCache();
+    if (cached.articles && cached.articles.length) {
+      renderArchive(cached.articles);
+    } else {
+      emptyState.style.display = 'block';
+    }
+  }
+}
+
+function readArchiveCache() {
+  try {
+    const raw = localStorage.getItem(ARCHIVE_CACHE_KEY);
+    if (!raw) return { articles: [] };
+    return JSON.parse(raw);
+  } catch {
+    return { articles: [] };
+  }
+}
+
+function writeArchiveCache(articles) {
+  try {
+    localStorage.setItem(ARCHIVE_CACHE_KEY, JSON.stringify({
+      storedAt: new Date().toISOString(),
+      articles: articles.slice(0, 500)
+    }));
+  } catch {}
+}
+
+function renderArchive(articles) {
+  const archiveGrid = document.getElementById('archiveGrid');
+  const pagination = document.getElementById('pagination');
+  const emptyState = document.getElementById('emptyState');
+
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page') || '1');
+  const totalPages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
+  const startIdx = (currentPage - 1) * ARTICLES_PER_PAGE;
+  const endIdx = startIdx + ARTICLES_PER_PAGE;
+  const pageArticles = articles.slice(startIdx, endIdx);
+
+  emptyState.style.display = 'none';
+
+  // Render articles
+  archiveGrid.innerHTML = pageArticles.map((article, idx) => `
+    <div class="archive-card" style="animation-delay: ${idx * 0.05}s;">
+      <div class="archive-thumb">
+        ${article.image ? `<img src="${escapeHtml(article.image)}" alt="${escapeHtml(article.title)}" loading="lazy">` : '<div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(225,6,0,0.2),rgba(10,10,10,0.1));"></div>'}
+      </div>
+      <div class="archive-category">${escapeHtml(article.category)}</div>
+      <h3 class="archive-title">${escapeHtml(article.title)}</h3>
+      <p class="archive-summary">${escapeHtml(article.summary)}</p>
+      <div class="archive-meta">
+        <span class="archive-source">${escapeHtml(article.source)}</span>
+        <span>${timeAgo(article.publishedAt)}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Render pagination (Google-style)
+  const pageNums = [];
+  const maxVisible = 7;
+  
+  if (totalPages <= maxVisible) {
+    for (let i = 1; i <= totalPages; i++) pageNums.push(i);
+  } else {
+    pageNums.push(1);
+    if (currentPage > 3) pageNums.push('...');
+    
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) pageNums.push(i);
+    
+    if (currentPage < totalPages - 2) pageNums.push('...');
+    pageNums.push(totalPages);
+  }
+
+  pagination.innerHTML = '';
+
+  if (currentPage > 1) {
+    const prevBtn = document.createElement('a');
+    prevBtn.href = `?page=${currentPage - 1}`;
+    prevBtn.className = 'page-btn';
+    prevBtn.textContent = '← Previous';
+    pagination.appendChild(prevBtn);
+  }
+
+  pageNums.forEach(num => {
+    if (num === '...') {
+      const dots = document.createElement('span');
+      dots.textContent = '...';
+      dots.style.padding = '0 4px';
+      pagination.appendChild(dots);
+    } else {
+      const btn = document.createElement(num === currentPage ? 'div' : 'a');
+      btn.className = num === currentPage ? 'page-num active' : 'page-num';
+      if (num !== currentPage) {
+        btn.href = `?page=${num}`;
+        btn.style.cursor = 'pointer';
+        btn.classList.add('page-btn');
+      }
+      btn.textContent = num;
+      pagination.appendChild(btn);
+    }
+  });
+
+  if (currentPage < totalPages) {
+    const nextBtn = document.createElement('a');
+    nextBtn.href = `?page=${currentPage + 1}`;
+    nextBtn.className = 'page-btn';
+    nextBtn.textContent = 'Next →';
+    pagination.appendChild(nextBtn);
+  }
+}
+
+// Initialize on load
+fetchArchive();
+</script>
+
+</body>
+</html>

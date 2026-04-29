@@ -1,7 +1,13 @@
     (function () {
       const PROXY_URL = window.__NEWS_PROXY_URL__ || 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
-      const ARTICLE_LIMIT = 8;
+      const ARTICLE_LIMIT = 15;
       const NEWS_CACHE_KEY = 'pw-news-page-cache';
+
+      function decodeHtmlEntities(text) {
+        const textarea = document.createElement('textarea');
+        textarea.innerHTML = text;
+        return textarea.value;
+      }
       const categoryChips = document.getElementById('categoryChips');
       const sourceChips = document.getElementById('sourceChips');
       const newsList = document.getElementById('newsList');
@@ -49,8 +55,8 @@
 
       function normalizeArticle(raw, index) {
         const url = raw?.url || raw?.link || '#';
-        const title = raw?.title || raw?.headline || '';
-        const summary = raw?.summary || raw?.description || raw?.excerpt || '';
+        const title = decodeHtmlEntities(raw?.title || raw?.headline || '');
+        const summary = decodeHtmlEntities(raw?.summary || raw?.description || raw?.excerpt || '');
         const source = raw?.source || raw?.publisher || raw?.feedName || 'F1 News';
         const category = raw?.category || raw?.section || 'Paddock';
         const publishedAt = raw?.publishedAt || raw?.pubDate || raw?.date || '';

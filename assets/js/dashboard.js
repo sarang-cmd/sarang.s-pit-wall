@@ -114,7 +114,13 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
   const NEWS_PROXY_URL = window.__NEWS_PROXY_URL__ || '';
   const NEWS_REFRESH_MS = 30 * 60 * 1000;
   const NEWS_CACHE_KEY = 'pw-news-cache';
-  const NEWS_LIMIT = 4;
+  const NEWS_LIMIT = 15;
+
+  function decodeHtmlEntities(text) {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+  }
 
   const TEAM_COLORS = {
     'Mercedes': 'var(--mercedes)',
@@ -439,8 +445,8 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
   }
 
   function normalizeNewsArticle(raw, index){
-    const title = raw?.title || raw?.headline || raw?.name || '';
-    const summary = raw?.summary || raw?.description || raw?.excerpt || '';
+    const title = decodeHtmlEntities(raw?.title || raw?.headline || raw?.name || '');
+    const summary = decodeHtmlEntities(raw?.summary || raw?.description || raw?.excerpt || '');
     const url = raw?.url || raw?.link || '#';
     const source = raw?.source || raw?.publisher || raw?.feedName || 'Paddock';
     const publishedAt = raw?.publishedAt || raw?.pubDate || raw?.date || '';
