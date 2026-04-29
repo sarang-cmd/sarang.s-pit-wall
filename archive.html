@@ -202,7 +202,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
       margin-top: 56px;
       padding-top: 36px;
       border-top: 1px solid var(--rule);
@@ -214,40 +215,59 @@
       to { opacity: 1; }
     }
 
-    .page-btn, .page-num {
+    .page-chip {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 36px;
-      height: 36px;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      border: 1px solid var(--ink);
-      background: transparent;
+      min-width: 42px;
+      height: 42px;
+      padding: 0 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: 1px solid rgba(10,10,10,0.18);
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(242,236,224,0.92));
       color: var(--ink);
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.2s ease;
+      border-radius: 999px;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     }
 
-    .page-num { cursor: default; border: none; }
+    .page-chip:hover:not(.active) {
+      transform: translateY(-1px);
+      border-color: var(--racing);
+      color: var(--racing);
+    }
 
-    .page-btn:hover:not(:disabled) {
+    .page-chip.active {
       background: var(--ink);
       color: var(--paper);
-      transform: translateY(-1px);
+      border-color: var(--ink);
+      box-shadow: 0 10px 24px rgba(10,10,10,0.16);
     }
 
-    .page-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .page-chip.nav {
+      background: linear-gradient(180deg, rgba(10,10,10,0.94), rgba(10,10,10,0.82));
+      color: var(--paper);
+      border-color: var(--ink);
+      padding-inline: 16px;
     }
 
-    .page-num.active {
+    .page-chip.nav:hover {
       background: var(--racing);
       color: #fff;
       border-color: var(--racing);
+    }
+
+    .page-gap {
+      color: var(--ink-3);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      padding: 0 2px;
     }
 
     .empty-state {
@@ -469,26 +489,25 @@ function renderArchive(articles) {
   if (currentPage > 1) {
     const prevBtn = document.createElement('a');
     prevBtn.href = `?page=${currentPage - 1}`;
-    prevBtn.className = 'page-btn';
-    prevBtn.textContent = '← Previous';
+    prevBtn.className = 'page-chip nav';
+    prevBtn.textContent = '← Earlier';
     pagination.appendChild(prevBtn);
   }
 
   pageNums.forEach(num => {
     if (num === '...') {
       const dots = document.createElement('span');
-      dots.textContent = '...';
-      dots.style.padding = '0 4px';
+      dots.className = 'page-gap';
+      dots.textContent = '···';
       pagination.appendChild(dots);
     } else {
       const btn = document.createElement(num === currentPage ? 'div' : 'a');
-      btn.className = num === currentPage ? 'page-num active' : 'page-num';
+      btn.className = num === currentPage ? 'page-chip active' : 'page-chip';
       if (num !== currentPage) {
         btn.href = `?page=${num}`;
-        btn.style.cursor = 'pointer';
-        btn.classList.add('page-btn');
+        btn.setAttribute('aria-label', `Open page ${num}`);
       }
-      btn.textContent = num;
+      btn.textContent = `#${String(num).padStart(2, '0')}`;
       pagination.appendChild(btn);
     }
   });
@@ -496,8 +515,8 @@ function renderArchive(articles) {
   if (currentPage < totalPages) {
     const nextBtn = document.createElement('a');
     nextBtn.href = `?page=${currentPage + 1}`;
-    nextBtn.className = 'page-btn';
-    nextBtn.textContent = 'Next →';
+    nextBtn.className = 'page-chip nav';
+    nextBtn.textContent = 'Later →';
     pagination.appendChild(nextBtn);
   }
 }

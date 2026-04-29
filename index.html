@@ -3016,9 +3016,7 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
 
     // Show top 3 finishers
     const top3 = results.slice(0, 3);
-    const raceName = venueForRace(race);
-    const circuitName = race?.Circuit?.circuitName || '';
-    podiumHead.textContent = `${raceName} · ${circuitName} · Result`;
+    podiumHead.textContent = 'Latest podium result';
 
     podiumList.innerHTML = top3.map((result, idx) => {
       const position = idx + 1;
@@ -3366,44 +3364,63 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
     { channel: 'Speed Matters', title: 'Aerodynamics Mastery', views: '289K', date: '5d ago', thumbnail: '⚡' }
   ];
 
-  // Format view count (e.g., 512K, 1.2M)
-  const formatViews = (count) => {
-    if (typeof count === 'string') return count;
-    const num = Number(count);
-    if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
-    return num.toString();
-  };
-
-  // Create video card HTML
   const createVideoCard = (video) => `
-    <div class="youtube-card">
+    <a class="youtube-card" href="${escapeHtml(video.link)}" target="_blank" rel="noopener noreferrer">
       <div class="youtube-thumbnail">
-        ${video.thumbnail}
+        ${video.thumbnail ? `<img src="${escapeHtml(video.thumbnail)}" alt="${escapeHtml(video.title)}" loading="lazy" decoding="async">` : '<div style="background: rgba(225,6,0,0.25); width:100%; height:100%;"></div>'}
         <div class="youtube-play-button">▶</div>
       </div>
       <div class="youtube-title">${escapeHtml(video.title)}</div>
       <div class="youtube-channel">${escapeHtml(video.channel)}</div>
       <div class="youtube-stats">
-        <span>${formatViews(video.views)} views</span>
-        <span>${video.date}</span>
+        <span>Latest upload</span>
+        <span>${escapeHtml(video.date)}</span>
       </div>
-    </div>
+    </a>
   `;
 
-  // Populate racing channels grid
-  const racingGrid = document.getElementById('racingChannelsGrid');
-  if (racingGrid) {
-    const html = RACING_VIDEOS.map(createVideoCard).join('');
-    racingGrid.innerHTML = html;
+  async function fetchChannelVideos(channelList, channelsToUse, videosPerChannel) {
+    const videos = [];
+    for (const channel of channelList.slice(0, channelsToUse)) {
+      try {
+        const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel.id}`;
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`);
+        const data = await response.json();
+        if (!data.contents) continue;
+
+        const doc = new DOMParser().parseFromString(data.contents, 'text/xml');
+        const entries = [...doc.querySelectorAll('entry')].slice(0, videosPerChannel);
+        entries.forEach((entry) => {
+          const title = entry.querySelector('title')?.textContent || 'Untitled';
+          const link = entry.querySelector('link')?.getAttribute('href') || '#';
+          const publishedAt = entry.querySelector('published')?.textContent || '';
+          const thumbnail = entry.querySelector('media\\:thumbnail')?.getAttribute('url') || entry.querySelector('thumbnail')?.getAttribute('url') || '';
+          const date = publishedAt ? new Date(publishedAt).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Fresh';
+          videos.push({
+            title: title.substring(0, 72),
+            channel: channel.name,
+            link,
+            thumbnail,
+            date
+          });
+        });
+      } catch (error) {
+        console.log(`Skipping channel ${channel.name}`);
+      }
+    }
+    return videos;
   }
 
-  // Populate F1 YouTubers grid
-  const f1Grid = document.getElementById('f1YouTubersGrid');
-  if (f1Grid) {
-    const html = F1_YOUTUBER_VIDEOS.map(createVideoCard).join('');
-    f1Grid.innerHTML = html;
+  async function populateVideoSection(containerId, channelList, channelsToUse, videosPerChannel) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const videos = await fetchChannelVideos(channelList, channelsToUse, videosPerChannel);
+    if (!videos.length) return;
+    container.innerHTML = videos.map(createVideoCard).join('');
   }
+
+  populateVideoSection('racingChannelsGrid', RACING_CHANNELS, 4, 2);
+  populateVideoSection('f1YouTubersGrid', TOP_F1_YOUTUBERS, 6, 2);
 })();
 </script>
 
