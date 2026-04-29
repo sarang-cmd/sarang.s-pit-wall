@@ -1835,9 +1835,12 @@ body.colo-open { overflow: hidden; }
 
 .youtube-card {
   position: relative;
+  display: block;
   background: var(--paper-2);
   border: 1px solid var(--rule);
   overflow: hidden;
+  color: inherit;
+  text-decoration: none;
   transition: all 0.3s ease;
 }
 
@@ -3411,16 +3414,17 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
     return videos;
   }
 
-  async function populateVideoSection(containerId, channelList, channelsToUse, videosPerChannel) {
+  async function populateVideoSection(containerId, channelList, channelsToUse, videosPerChannel, fallbackVideos) {
     const container = document.getElementById(containerId);
     if (!container) return;
     const videos = await fetchChannelVideos(channelList, channelsToUse, videosPerChannel);
-    if (!videos.length) return;
-    container.innerHTML = videos.map(createVideoCard).join('');
+    const cards = videos.length ? videos : fallbackVideos;
+    if (!cards.length) return;
+    container.innerHTML = cards.map(createVideoCard).join('');
   }
 
-  populateVideoSection('racingChannelsGrid', RACING_CHANNELS, 4, 2);
-  populateVideoSection('f1YouTubersGrid', TOP_F1_YOUTUBERS, 6, 2);
+  populateVideoSection('racingChannelsGrid', RACING_CHANNELS, 4, 2, RACING_VIDEOS);
+  populateVideoSection('f1YouTubersGrid', TOP_F1_YOUTUBERS, 6, 2, F1_YOUTUBER_VIDEOS);
 })();
 </script>
 
