@@ -917,63 +917,27 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
 .driver-row:hover { background: var(--paper-2); transform: translateX(3px); }
 .driver-row.leader { background: linear-gradient(90deg, rgba(212,160,23,0.22) 0%, transparent 60%); border-left: 4px solid #d4a017; padding-left: 20px; }
 .driver-row.leader::after {
-  content: '1st';
+  content: '🥇';
   position: absolute;
   right: 90px; top: 50%;
   transform: translateY(-50%);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  font-weight: 900;
-  color: #d4a017;
-  letter-spacing: .05em;
-  background: linear-gradient(135deg, #d4a017 0%, #e8b923 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding: 4px 6px;
-  border: 1.5px solid #d4a017;
-  border-radius: 3px;
-  box-shadow: inset 0 0 8px rgba(212,160,23,0.3);
+  font-size: 18px;
 }
 .driver-row.p2 { background: linear-gradient(90deg, rgba(160,160,160,0.15) 0%, transparent 60%); border-left: 4px solid #a0a0a0; padding-left: 20px; }
 .driver-row.p2::after {
-  content: '2nd';
+  content: '🥈';
   position: absolute;
   right: 90px; top: 50%;
   transform: translateY(-50%);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  font-weight: 900;
-  color: #a0a0a0;
-  letter-spacing: .05em;
-  background: linear-gradient(135deg, #a0a0a0 0%, #b8b8b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding: 4px 6px;
-  border: 1.5px solid #a0a0a0;
-  border-radius: 3px;
-  box-shadow: inset 0 0 8px rgba(160,160,160,0.2);
+  font-size: 18px;
 }
 .driver-row.p3 { background: linear-gradient(90deg, rgba(176,108,48,0.15) 0%, transparent 60%); border-left: 4px solid #b06c30; padding-left: 20px; }
 .driver-row.p3::after {
-  content: '3rd';
+  content: '🥉';
   position: absolute;
   right: 90px; top: 50%;
   transform: translateY(-50%);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  font-weight: 900;
-  color: #b06c30;
-  letter-spacing: .05em;
-  background: linear-gradient(135deg, #b06c30 0%, #c9844f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding: 4px 6px;
-  border: 1.5px solid #b06c30;
-  border-radius: 3px;
-  box-shadow: inset 0 0 8px rgba(176,108,48,0.2);
+  font-size: 18px;
 }
 
 .driver-pos {
@@ -2054,26 +2018,25 @@ body.colo-open { overflow: hidden; }
 
       <div class="cal-round done"><div class="cal-rnum">R01<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇦🇺</div><div class="cal-country">Australia</div><div class="cal-flag-name">Albert Park</div><div class="cal-date">Mar 06–08</div><div class="cal-winner">G. Russell</div></div>
       <div class="cal-round done"><div class="cal-rnum">R02<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇨🇳</div><div class="cal-country">China</div><div class="cal-flag-name">Shanghai</div><div class="cal-date">Mar 13–15</div><div class="cal-winner">K. Antonelli</div></div>
-      <div class="cal-round done"><div class="cal-rnum">R03<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇯🇵</div><div class="cal-country">Japan</div><div class="cal-flag-name">Suzuka</div><div class="cal-date">Mar 27–29</div><div class="cal-winner">K. Antonelli</div></div>
-      <div class="cal-round next"><div class="cal-rnum">R04 · NEXT<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇺🇸</div><div class="cal-country">USA</div><div class="cal-flag-name">Miami</div><div class="cal-date">May 01–03</div></div>
-      <div class="cal-round"><div class="cal-rnum">R05<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇨🇦</div><div class="cal-country">Canada</div><div class="cal-flag-name">Montreal</div><div class="cal-date">May 22–24</div></div>
-      <div class="cal-round"><div class="cal-rnum">R06<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇲🇨</div><div class="cal-country">Monaco</div><div class="cal-flag-name">Monte Carlo</div><div class="cal-date">Jun 05–07</div></div>
-      <div class="cal-round"><div class="cal-rnum">R07<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇪🇸</div><div class="cal-country">Spain</div><div class="cal-flag-name">Barcelona</div><div class="cal-date">Jun 12–14</div></div>
-      <div class="cal-round"><div class="cal-rnum">R08<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇦🇹</div><div class="cal-country">Austria</div><div class="cal-flag-name">Red Bull Ring</div><div class="cal-date">Jun 26–28</div></div>
-      <div class="cal-round"><div class="cal-rnum">R09<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇬🇧</div><div class="cal-country">UK</div><div class="cal-flag-name">Silverstone</div><div class="cal-date">Jul 03–05</div></div>
-      <div class="cal-round"><div class="cal-rnum">R10<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇧🇪</div><div class="cal-country">Belgium</div><div class="cal-flag-name">Spa</div><div class="cal-date">Jul 24–26</div></div>
-      <div class="cal-round"><div class="cal-rnum">R11<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇭🇺</div><div class="cal-country">Hungary</div><div class="cal-flag-name">Hungaroring</div><div class="cal-date">Jul 31–Aug 2</div></div>
-      <div class="cal-round"><div class="cal-rnum">R12<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇳🇱</div><div class="cal-country">Netherlands</div><div class="cal-flag-name">Zandvoort</div><div class="cal-date">Aug 21–23</div></div>
-      <div class="cal-round"><div class="cal-rnum">R13<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇮🇹</div><div class="cal-country">Italy</div><div class="cal-flag-name">Monza</div><div class="cal-date">Sep 04–06</div></div>
-      <div class="cal-round"><div class="cal-rnum">R14<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇪🇸</div><div class="cal-country">Spain</div><div class="cal-flag-name">Madrid</div><div class="cal-date">Sep 11–13</div></div>
-      <div class="cal-round"><div class="cal-rnum">R15<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇦🇿</div><div class="cal-country">Azerbaijan</div><div class="cal-flag-name">Baku</div><div class="cal-date">Sep 26 · Sat</div></div>
-      <div class="cal-round"><div class="cal-rnum">R16<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇸🇬</div><div class="cal-country">Singapore</div><div class="cal-flag-name">Marina Bay</div><div class="cal-date">Oct 09–11</div></div>
-      <div class="cal-round"><div class="cal-rnum">R17<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇺🇸</div><div class="cal-country">USA</div><div class="cal-flag-name">Austin</div><div class="cal-date">Oct 23–25</div></div>
-      <div class="cal-round"><div class="cal-rnum">R18<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇲🇽</div><div class="cal-country">Mexico</div><div class="cal-flag-name">Mexico City</div><div class="cal-date">Oct 30–Nov 1</div></div>
-      <div class="cal-round"><div class="cal-rnum">R19<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇧🇷</div><div class="cal-country">Brazil</div><div class="cal-flag-name">São Paulo</div><div class="cal-date">Nov 06–08</div></div>
-      <div class="cal-round"><div class="cal-rnum">R20<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇺🇸</div><div class="cal-country">USA</div><div class="cal-flag-name">Las Vegas</div><div class="cal-date">Nov 19–21</div></div>
-      <div class="cal-round"><div class="cal-rnum">R21<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇶🇦</div><div class="cal-country">Qatar</div><div class="cal-flag-name">Lusail</div><div class="cal-date">Nov 27–29</div></div>
-      <div class="cal-round"><div class="cal-rnum">R22<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇦🇪</div><div class="cal-country">UAE</div><div class="cal-flag-name">Yas Marina</div><div class="cal-date">Dec 04–06</div></div>
+      <div class="cal-round next"><div class="cal-rnum">R03 · NEXT<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇺🇸</div><div class="cal-country">USA</div><div class="cal-flag-name">Miami</div><div class="cal-date">May 01–03</div></div>
+      <div class="cal-round"><div class="cal-rnum">R04<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇨🇦</div><div class="cal-country">Canada</div><div class="cal-flag-name">Montreal</div><div class="cal-date">May 22–24</div></div>
+      <div class="cal-round"><div class="cal-rnum">R05<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇲🇨</div><div class="cal-country">Monaco</div><div class="cal-flag-name">Monte Carlo</div><div class="cal-date">Jun 05–07</div></div>
+      <div class="cal-round"><div class="cal-rnum">R06<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇪🇸</div><div class="cal-country">Spain</div><div class="cal-flag-name">Barcelona</div><div class="cal-date">Jun 12–14</div></div>
+      <div class="cal-round"><div class="cal-rnum">R07<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇦🇹</div><div class="cal-country">Austria</div><div class="cal-flag-name">Red Bull Ring</div><div class="cal-date">Jun 26–28</div></div>
+      <div class="cal-round"><div class="cal-rnum">R08<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇬🇧</div><div class="cal-country">UK</div><div class="cal-flag-name">Silverstone</div><div class="cal-date">Jul 03–05</div></div>
+      <div class="cal-round"><div class="cal-rnum">R09<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇧🇪</div><div class="cal-country">Belgium</div><div class="cal-flag-name">Spa</div><div class="cal-date">Jul 24–26</div></div>
+      <div class="cal-round"><div class="cal-rnum">R10<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇭🇺</div><div class="cal-country">Hungary</div><div class="cal-flag-name">Hungaroring</div><div class="cal-date">Jul 31–Aug 2</div></div>
+      <div class="cal-round"><div class="cal-rnum">R11<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇳🇱</div><div class="cal-country">Netherlands</div><div class="cal-flag-name">Zandvoort</div><div class="cal-date">Aug 21–23</div></div>
+      <div class="cal-round"><div class="cal-rnum">R12<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇮🇹</div><div class="cal-country">Italy</div><div class="cal-flag-name">Monza</div><div class="cal-date">Sep 04–06</div></div>
+      <div class="cal-round"><div class="cal-rnum">R13<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇪🇸</div><div class="cal-country">Spain</div><div class="cal-flag-name">Madrid</div><div class="cal-date">Sep 11–13</div></div>
+      <div class="cal-round"><div class="cal-rnum">R14<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇦🇿</div><div class="cal-country">Azerbaijan</div><div class="cal-flag-name">Baku</div><div class="cal-date">Sep 26 · Sat</div></div>
+      <div class="cal-round"><div class="cal-rnum">R15<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇸🇬</div><div class="cal-country">Singapore</div><div class="cal-flag-name">Marina Bay</div><div class="cal-date">Oct 09–11</div></div>
+      <div class="cal-round"><div class="cal-rnum">R16<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇺🇸</div><div class="cal-country">USA</div><div class="cal-flag-name">Austin</div><div class="cal-date">Oct 23–25</div></div>
+      <div class="cal-round"><div class="cal-rnum">R17<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇲🇽</div><div class="cal-country">Mexico</div><div class="cal-flag-name">Mexico City</div><div class="cal-date">Oct 30–Nov 1</div></div>
+      <div class="cal-round"><div class="cal-rnum">R18<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇧🇷</div><div class="cal-country">Brazil</div><div class="cal-flag-name">São Paulo</div><div class="cal-date">Nov 06–08</div></div>
+      <div class="cal-round"><div class="cal-rnum">R19<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇺🇸</div><div class="cal-country">USA</div><div class="cal-flag-name">Las Vegas</div><div class="cal-date">Nov 19–21</div></div>
+      <div class="cal-round"><div class="cal-rnum">R20<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇶🇦</div><div class="cal-country">Qatar</div><div class="cal-flag-name">Lusail</div><div class="cal-date">Nov 27–29</div></div>
+      <div class="cal-round"><div class="cal-rnum">R21<span class="cal-status-dot"></span></div><div class="cal-flag-emoji">🇦🇪</div><div class="cal-country">UAE</div><div class="cal-flag-name">Yas Marina</div><div class="cal-date">Dec 04–06</div></div>
 
     </div>
   </div>
@@ -2242,111 +2205,33 @@ body.colo-open { overflow: hidden; }
   </div>
 </section>
 
-<!-- GO LIVE SECTION · data upgrade paths · DO NOT MODIFY CTAs -->
+<!-- FEATURED MOMENTS · Gallery section · DO NOT MODIFY -->
 <section class="golive-section">
-  <div class="golive-card">
-    <div class="golive-stripe" aria-hidden="true"></div>
-    <div class="golive-left">
-      <div class="golive-eyebrow">§ 04 · Go Live</div>
-      <h2 class="golive-title">Make it <em>auto-update</em>.</h2>
-      <p class="golive-lede">
-        Right now this dashboard is a snapshot — you update the numbers after each race. When you're ready, there are three paths to real-time data pulled straight from the F1 API after every checkered flag.
-      </p>
+  <div style="max-width: 1440px; margin: 0 auto; padding: 56px 36px;">
+    <div style="margin-bottom: 40px;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; color: var(--ink); margin-bottom: 8px;">🎬 Season <em style="color: var(--racing); font-style: italic;">Moments</em></h2>
+      <p style="font-size: 14px; color: var(--ink-2); max-width: 70ch; line-height: 1.6;">The most iconic overtakes, celebrations, and turning points from the 2026 season so far.</p>
     </div>
-    <div class="golive-right">
-
-      <div class="golive-step">
-        <div class="golive-step-num">01</div>
-        <div>
-          <div class="golive-step-head">Manual <em>· 2 min after each race</em></div>
-          <div class="golive-step-body">
-            Open <code>index.html</code> in any text editor. Find a driver's name (e.g. <code>Antonelli</code>), update the number a few lines below it (e.g. <code>72</code> &rarr; <code>97</code>). Save. Redeploy. Good for fans who only watch the majors.
-          </div>
-        </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+      <div style="background: var(--carbon); color: white; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; height: 200px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">🏁</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Antonelli's Breakout</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Back-to-back wins as a rookie</div>
       </div>
-
-      <div class="golive-step">
-        <div class="golive-step-num">02</div>
-        <div>
-          <div class="golive-step-head">Semi-auto <em>· 30 sec via AI</em></div>
-          <div class="golive-step-body">
-            Paste the file into Claude or ChatGPT with this prompt &mdash; it does the rest.
-          </div>
-          <details class="golive-details">
-            <summary>show the prompt</summary>
-<pre class="golive-pre">Update my F1 dashboard after the [RACE NAME] GP.
-
-New driver standings (top 10):
-1. Antonelli &mdash; 97
-2. Russell &mdash; 84
-3. Leclerc &mdash; 68
-&hellip;
-
-New constructor totals:
-Mercedes 181, Ferrari 124, McLaren &hellip;
-
-New podium for "Last Race":
-P1 [Driver] &mdash; [Team] &mdash; [Time]
-P2 &hellip; (gap)
-P3 &hellip; (gap)
-
-Update the countdown to the next race.
-Return the COMPLETE HTML in one code block. Preserve every
-&lt;!-- DO NOT MODIFY --&gt; block exactly as-is.</pre>
-          </details>
-        </div>
+      <div style="background: var(--carbon); color: white; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; height: 200px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">⚡</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Power Unit Wars</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Mercedes leads engine performance</div>
       </div>
-
-      <div class="golive-step">
-        <div class="golive-step-num">03</div>
-        <div>
-          <div class="golive-step-head">Full auto <em>· public API, no manual edits</em></div>
-          <div class="golive-step-body">
-            Hook the dashboard to a public F1 data API. Standings update on their own once a race is over &mdash; no touching the file again for the rest of the season.
-          </div>
-          <details class="golive-details">
-            <summary>show the setup</summary>
-            <p class="golive-detail-p"><strong>Easiest path &middot; Jolpica F1 (Ergast successor, CORS-enabled).</strong> Add this script tag near the bottom of the file, just before the closing <code>&lt;/body&gt;</code>. It fetches once on load and overwrites the hardcoded driver points in place:</p>
-<pre class="golive-pre">&lt;script&gt;
-(async function () {
-  try {
-    const r = await fetch('https://api.jolpi.ca/ergast/f1/current/driverStandings.json');
-    const j = await r.json();
-    const list = j.MRData.StandingsTable.StandingsLists[0]?.DriverStandings || [];
-    document.querySelectorAll('.driver-row').forEach((row, i) =&gt; {
-      const d = list[i];
-      if (!d) return;
-      const pts = row.querySelector('.driver-pts');
-      if (pts) pts.textContent = d.points;
-    });
-  } catch (e) { /* network blip &mdash; keep the static template */ }
-})();
-&lt;/script&gt;</pre>
-            <p class="golive-detail-p"><strong>More powerful &middot; OpenF1 + a tiny proxy.</strong> OpenF1 has live timing data (laps, pit stops, positions during a session) but doesn't expose CORS. A 30-line Cloudflare Worker fixes that and adds a 10-minute cache. The Worker quickstart link below has everything; the transformation logic mirrors the snippet above.</p>
-            <p class="golive-detail-p"><strong>Python path &middot; FastF1 + GitHub Actions.</strong> Prefer Python? Use the FastF1 library to write a JSON snapshot, commit it via a GitHub Action on a daily cron, and have the dashboard fetch the JSON. Same idea, different stack.</p>
-          </details>
-        </div>
+      <div style="background: var(--carbon); color: white; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; height: 200px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">🎯</div>
+        <div style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px;">Tactical Mastery</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.7);">Strategic pit stops & tire management</div>
       </div>
-
-      <div class="golive-cta-row">
-        <a class="golive-cta golive-cta-ghost" href="https://api.jolpi.ca/ergast/" target="_blank" rel="noopener noreferrer">
-          Jolpica F1 API
-        </a>
-        <a class="golive-cta golive-cta-ghost" href="https://openf1.org/" target="_blank" rel="noopener noreferrer">
-          OpenF1 docs
-        </a>
-        <a class="golive-cta golive-cta-ghost" href="https://docs.fastf1.dev/" target="_blank" rel="noopener noreferrer">
-          FastF1 (Python)
-        </a>
-        <a class="golive-cta golive-cta-ghost" href="https://developers.cloudflare.com/workers/get-started/quickstarts/" target="_blank" rel="noopener noreferrer">
-          Cloudflare Workers
-        </a>
-      </div>
-
     </div>
   </div>
 </section>
-<!-- END GO LIVE SECTION -->
+<!-- END FEATURED MOMENTS -->
 
 <section class="stats-ribbon">
   <div class="stats-grid">
@@ -2968,7 +2853,7 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
       const age = formatNewsAge(item.publishedAt);
       const ageText = age ? `<span class="news-source">${escapeHtml(age)}</span>` : '<span class="news-source">Fresh</span>';
       return `
-        <article class="news-item ${leadClass}">
+        <article class="news-item ${leadClass}" data-url="${escapeHtml(item.url)}" style="cursor: pointer;">
           <div class="news-meta">
             <span class="news-kicker">${escapeHtml(item.category || 'Paddock')}</span>
             <span class="news-num">${String(index + 1).padStart(2, '0')}</span>
@@ -2982,6 +2867,15 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
           </div>
         </article>`;
     }).join('');
+    // Add click handlers to open articles
+    document.querySelectorAll('.news-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        if (e.target.tagName !== 'A') {
+          const url = this.dataset.url;
+          if (url) window.open(url, '_blank');
+        }
+      });
+    });
   }
 
   function readNewsCache(){
