@@ -75,20 +75,19 @@
       <section class="list-panel">
         <div class="list-top">
           <div>
-            <h2 class="list-title">Latest stories</h2>
-            <div class="list-meta" id="listMeta">Loading the feed.</div>
+            <h2 class="list-title">All 500+ articles</h2>
+            <div class="list-meta" id="listMeta">Loading the backlog...</div>
           </div>
           <a class="btn ghost" href="#top">Back to top</a>
         </div>
-        <div class="scroll-box">
-          <div class="article-list" id="newsList">
-            <div class="loading">
-              <div class="loading-card"></div>
-              <div class="loading-card"></div>
-              <div class="loading-card"></div>
-            </div>
+        <div class="article-list" id="newsList" style="max-height: none; overflow: visible; padding: 16px;">
+          <div class="loading">
+            <div class="loading-card"></div>
+            <div class="loading-card"></div>
+            <div class="loading-card"></div>
           </div>
         </div>
+        <div id="paginationContainer" style="margin-top: 20px;"></div>
       </section>
 
       <footer class="footer">
@@ -102,6 +101,6 @@
   <script>
     window.__NEWS_PROXY_URL__ = 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
   </script>
-  <script src="assets/js/news.js"></script>
+  <script src="assets/js/news-backlog.js"></script>
 </body>
 </html>
