@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Pit Wall · F1 News Desk</title>
+  <meta name="description" content="Browse the latest Formula 1 news with filters, thumbnails, and a ranked feed from mainstream outlets." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --carbon: #0a0a0a;
+      --carbon-2: #121212;
+      --carbon-3: #1c1c1c;
+      --paper: #f2ece0;
+      --paper-2: #e8e1d2;
+      --paper-3: #d8d0bf;
+      --ink: #0a0a0a;
+      --ink-2: #463f34;
+      --ink-3: #7d7566;
+      --racing: #e10600;
+      --racing-hot: #ff2416;
+      --rule: rgba(10,10,10,0.18);
+      --shadow: 0 24px 80px rgba(0,0,0,0.28);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(225, 6, 0, 0.15), transparent 28%),
+        radial-gradient(circle at 88% 12%, rgba(212, 160, 23, 0.18), transparent 20%),
+        linear-gradient(180deg, #111 0%, #090909 100%);
+      color: var(--paper);
+      font-family: 'Inter', sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    ::selection { background: rgba(225, 6, 0, 0.25); }
+
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .shell {
+      background: linear-gradient(180deg, rgba(242,236,224,0.99), rgba(232,225,210,0.97));
+      color: var(--ink);
+      border: 2px solid rgba(10,10,10,0.9);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .shell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(10,10,10,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(10,10,10,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), transparent 90%);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .brand-kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 0.95;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .brand-title em { color: var(--racing); font-style: italic; font-weight: 700; }
+    .brand-sub {
+      max-width: 66ch;
+      color: var(--ink-2);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 15px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--paper); color: var(--ink); }
+    .btn.ghost { background: transparent; color: var(--ink); }
+    .btn.ghost:hover { background: var(--ink); color: var(--paper); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+      gap: 18px;
+      padding: 24px;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-panel,
+    .stats-panel,
+    .filters-panel,
+    .list-panel {
+      background: rgba(255,255,255,0.42);
+      border: 1px solid rgba(10,10,10,0.14);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .hero-panel {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .hero-title {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4.4vw, 58px);
+      line-height: 0.98;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    .hero-title em { color: var(--racing); font-style: italic; }
+    .hero-copy {
+      max-width: 70ch;
+      color: var(--ink-2);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .stat {
+      padding: 12px 14px;
+      border: 1px solid rgba(10,10,10,0.12);
+      background: linear-gradient(180deg, rgba(242,236,224,0.95), rgba(232,225,210,0.92));
+      min-height: 82px;
+    }
+    .stat-label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .stat-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--ink-2);
+      line-height: 1.45;
+    }
+
+    .stats-panel {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+    .panel-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+      margin: 0;
+    }
+    .panel-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-2);
+      margin: 0;
+    }
+    .pulse-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .pulse-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(10,10,10,0.12);
+      background: rgba(255,255,255,0.42);
+      font-size: 12px;
+      color: var(--ink-2);
+    }
+    .pulse-item strong {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .filters-panel {
+      padding: 16px 24px 20px;
+      display: grid;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .filters-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filters-title {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 700;
+    }
+    .filters-sub {
+      margin: 6px 0 0;
+      color: var(--ink-2);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .search {
+      min-width: min(100%, 320px);
+      flex: 0 0 320px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid rgba(10,10,10,0.16);
+      background: rgba(255,255,255,0.58);
+    }
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .search input::placeholder { color: var(--ink-3); }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      border: 1px solid rgba(10,10,10,0.18);
+      background: rgba(255,255,255,0.45);
+      color: var(--ink);
+      padding: 9px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+    .chip:hover { transform: translateY(-1px); }
+    .chip.active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    .list-panel {
+      margin: 0 24px 24px;
+      padding: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .list-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+    .list-title {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .list-meta {
+      font-size: 12px;
+      color: var(--ink-2);
+      line-height: 1.55;
+      max-width: 60ch;
+    }
+    .scroll-box {
+      max-height: min(72vh, 860px);
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .scroll-box::-webkit-scrollbar { width: 10px; }
+    .scroll-box::-webkit-scrollbar-track { background: rgba(10,10,10,0.05); }
+    .scroll-box::-webkit-scrollbar-thumb { background: rgba(10,10,10,0.24); border-radius: 999px; }
+
+    .article-list {
+      display: grid;
+      gap: 14px;
+    }
+    .article-card {
+      display: grid;
+      grid-template-columns: 132px minmax(0, 1fr);
+      gap: 16px;
+      padding: 14px;
+      background: rgba(255,255,255,0.52);
+      border: 1px solid rgba(10,10,10,0.14);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .article-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(10,10,10,0.26);
+      background: rgba(255,255,255,0.76);
+    }
+    .thumb {
+      position: relative;
+      min-height: 92px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(225,6,0,0.25), rgba(10,10,10,0.75));
+      border: 1px solid rgba(10,10,10,0.2);
+    }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .thumb-fallback {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 10px;
+      text-align: center;
+      color: var(--paper);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      line-height: 1.35;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(212,160,23,0.22), transparent 28%),
+        linear-gradient(135deg, rgba(225,6,0,0.3), rgba(10,10,10,0.88));
+    }
+    .thumb-fallback small {
+      display: block;
+      margin-top: 6px;
+      color: rgba(242,236,224,0.78);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+    }
+
+    .article-body {
+      min-width: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .article-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .article-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .badge,
+    .badge-soft {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 5px 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .badge {
+      background: var(--racing);
+      color: #fff;
+    }
+    .badge-soft {
+      background: rgba(10,10,10,0.07);
+      color: var(--ink-2);
+    }
+    .article-title {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      line-height: 1.08;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .article-summary {
+      margin: 0;
+      color: var(--ink-2);
+      line-height: 1.68;
+      font-size: 13px;
+    }
+    .article-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .article-source {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+    .article-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--racing);
+      border-bottom: 1px dashed currentColor;
+      padding-bottom: 1px;
+    }
+    .article-link:hover { color: var(--racing-hot); border-bottom-color: var(--racing-hot); }
+    .empty {
+      padding: 24px;
+      border: 1px dashed rgba(10,10,10,0.2);
+      background: rgba(255,255,255,0.45);
+      color: var(--ink-2);
+      line-height: 1.6;
+    }
+    .loading {
+      display: grid;
+      gap: 10px;
+    }
+    .loading-card {
+      height: 122px;
+      border: 1px solid rgba(10,10,10,0.12);
+      background: linear-gradient(90deg, rgba(255,255,255,0.28), rgba(255,255,255,0.62), rgba(255,255,255,0.28));
+      background-size: 220% 100%;
+      animation: shimmer 1.4s ease infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -20% 0; }
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 18px 24px 24px;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-3);
+      font-size: 12px;
+    }
+    .footer strong { color: var(--ink); }
+
+    @media (max-width: 1080px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .topbar, .hero, .filters-panel, .list-panel, .footer { padding-left: 16px; padding-right: 16px; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .search { flex: 1 1 100%; min-width: 0; }
+      .article-card { grid-template-columns: 1fr; }
+      .thumb { min-height: 164px; }
+      .list-panel { margin: 0 16px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <section class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-kicker">The Pit Wall</div>
+          <div class="brand-title">F1 <em>News</em> Desk</div>
+          <div class="brand-sub">A curated feed from mainstream Formula 1 outlets, ranked to keep the list short and focused. The articles stay scrollable, but the noise does not.</div>
+        </div>
+        <div class="top-actions">
+          <a class="btn ghost" href="index.html">Back to dashboard</a>
+          <button class="btn" type="button" id="refreshBtn">Refresh stories</button>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="hero-panel">
+          <div class="eyebrow">Curated live feed</div>
+          <h1 class="hero-title">The strongest Formula 1 stories, <em>not</em> the loudest ones.</h1>
+          <p class="hero-copy">This page pulls from official and major F1 outlets, filters the feed for relevance, and uses Puter.js to rank the most interesting pieces first when the library is available. You get a compact scrollable list with thumbnails, source labels, and direct links back to the originals.</p>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-label">View</span>
+              <div class="stat-value" id="statShown">0</div>
+              <div class="stat-note">stories shown in the scroll area</div>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Sources</span>
+              <div class="stat-value" id="statSources">0</div>
+              <div class="stat-note">mainstream outlets in the mix</div>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Updated</span>
+              <div class="stat-value" id="statUpdated">--</div>
+              <div class="stat-note">last successful refresh</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="stats-panel">
+          <h2 class="panel-title">Source stack</h2>
+          <p class="panel-text">Official F1, BBC Sport, Sky Sports, RaceFans, PlanetF1, RacingNews365, Motorsport.com, The Race, The Athletic, and NewsNow.</p>
+          <div class="pulse-list" id="sourceStack"></div>
+        </aside>
+      </section>
+
+      <section class="filters-panel">
+        <div class="filters-top">
+          <div>
+            <h2 class="filters-title">Filter the grid</h2>
+            <p class="filters-sub">Use the chips to narrow the feed by category or source. Search is fuzzy and case-insensitive.</p>
+          </div>
+          <label class="search" aria-label="Search stories">
+            <span class="brand-kicker">Search</span>
+            <input id="searchInput" type="search" placeholder="Mercedes, penalty, upgrade, contract..." autocomplete="off">
+          </label>
+        </div>
+        <div class="chips" id="categoryChips"></div>
+        <div class="chips" id="sourceChips"></div>
+      </section>
+
+      <section class="list-panel">
+        <div class="list-top">
+          <div>
+            <h2 class="list-title">Latest stories</h2>
+            <div class="list-meta" id="listMeta">Loading the feed.</div>
+          </div>
+          <a class="btn ghost" href="#top">Back to top</a>
+        </div>
+        <div class="scroll-box">
+          <div class="article-list" id="newsList">
+            <div class="loading">
+              <div class="loading-card"></div>
+              <div class="loading-card"></div>
+              <div class="loading-card"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div><strong>The Pit Wall</strong> news desk</div>
+        <div id="footerText">Mainstream F1 sources only. Ranked, filtered, and kept short.</div>
+      </footer>
+    </section>
+  </main>
+
+  <script src="https://js.puter.com/v2/"></script>
+  <script>
+    window.__NEWS_PROXY_URL__ = 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
+  </script>
+  <script>
+    (function () {
+      const PROXY_URL = window.__NEWS_PROXY_URL__ || 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
+      const ARTICLE_LIMIT = 8;
+      const NEWS_CACHE_KEY = 'pw-news-page-cache';
+      const categoryChips = document.getElementById('categoryChips');
+      const sourceChips = document.getElementById('sourceChips');
+      const newsList = document.getElementById('newsList');
+      const searchInput = document.getElementById('searchInput');
+      const listMeta = document.getElementById('listMeta');
+      const statShown = document.getElementById('statShown');
+      const statSources = document.getElementById('statSources');
+      const statUpdated = document.getElementById('statUpdated');
+      const sourceStack = document.getElementById('sourceStack');
+      const refreshBtn = document.getElementById('refreshBtn');
+
+      const state = {
+        articles: [],
+        filtered: [],
+        category: 'all',
+        source: 'all',
+        search: ''
+      };
+
+      const categoryOrder = ['all', 'Race Weekend', 'Driver Market', 'Team News', 'Technical', 'FIA', 'Paddock'];
+      const categoryLabels = {
+        all: 'All',
+        'Race Weekend': 'Race Weekend',
+        'Driver Market': 'Driver Market',
+        'Team News': 'Team News',
+        'Technical': 'Technical',
+        'FIA': 'FIA',
+        'Paddock': 'Paddock'
+      };
+
+      function escapeHtml(input) {
+        return String(input ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function clampText(value, limit) {
+        const text = String(value || '').trim();
+        if (text.length <= limit) return text;
+        return `${text.slice(0, limit - 1).trimEnd()}…`;
+      }
+
+      function normalizeArticle(raw, index) {
+        const url = raw?.url || raw?.link || '#';
+        const title = raw?.title || raw?.headline || '';
+        const summary = raw?.summary || raw?.description || raw?.excerpt || '';
+        const source = raw?.source || raw?.publisher || raw?.feedName || 'F1 News';
+        const category = raw?.category || raw?.section || 'Paddock';
+        const publishedAt = raw?.publishedAt || raw?.pubDate || raw?.date || '';
+        const image = raw?.image || raw?.thumbnail || raw?.media || '';
+        return {
+          id: `${url}|${title}|${index}`,
+          url,
+          title: clampText(title, 120),
+          summary: clampText(summary, 220),
+          source,
+          category,
+          publishedAt,
+          image,
+          index
+        };
+      }
+
+      function timeAgo(publishedAt) {
+        if (!publishedAt) return 'Fresh';
+        const published = new Date(publishedAt);
+        if (Number.isNaN(published.getTime())) return 'Fresh';
+        const minutes = Math.max(0, Math.round((Date.now() - published.getTime()) / 60000));
+        if (minutes < 60) return `${minutes}m ago`;
+        const hours = Math.round(minutes / 60);
+        if (hours < 24) return `${hours}h ago`;
+        const days = Math.round(hours / 24);
+        return `${days}d ago`;
+      }
+
+      function hashColor(seed) {
+        let hash = 0;
+        for (let i = 0; i < seed.length; i += 1) hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+        const hue = Math.abs(hash) % 360;
+        return `hsl(${hue} 72% 36%)`;
+      }
+
+      function categoryPriority(category) {
+        switch ((category || '').toLowerCase()) {
+          case 'race weekend': return 5;
+          case 'driver market': return 4;
+          case 'team news': return 4;
+          case 'technical': return 4;
+          case 'fia': return 3;
+          case 'paddock': return 2;
+          default: return 1;
+        }
+      }
+
+      function sourcePriority(source) {
+        const value = String(source || '').toLowerCase();
+        if (value.includes('formula1.com')) return 6;
+        if (value.includes('bbc')) return 5;
+        if (value.includes('sky')) return 5;
+        if (value.includes('racefans')) return 5;
+        if (value.includes('planetf1')) return 4;
+        if (value.includes('racingnews365')) return 4;
+        if (value.includes('motorsport')) return 4;
+        if (value.includes('the race')) return 4;
+        if (value.includes('athletic')) return 3;
+        if (value.includes('newsnow')) return 3;
+        return 2;
+      }
+
+      function recencyScore(publishedAt) {
+        const ts = Date.parse(publishedAt || '');
+        if (!ts) return 0;
+        const hours = Math.max(0, (Date.now() - ts) / 3600000);
+        return Math.max(0, 12 - hours);
+      }
+
+      function heuristicRank(items) {
+        return [...items].sort((a, b) => {
+          const aScore = categoryPriority(a.category) + sourcePriority(a.source) + recencyScore(a.publishedAt);
+          const bScore = categoryPriority(b.category) + sourcePriority(b.source) + recencyScore(b.publishedAt);
+          if (bScore !== aScore) return bScore - aScore;
+          return (Date.parse(b.publishedAt || '') || 0) - (Date.parse(a.publishedAt || '') || 0);
+        });
+      }
+
+      function extractPuterText(result) {
+        if (typeof result === 'string') return result;
+        if (!result || typeof result !== 'object') return '';
+        return result.text || result.content || result.message || result.response || '';
+      }
+
+      async function rankWithPuter(items) {
+        if (!window.puter || !window.puter.ai || typeof window.puter.ai.chat !== 'function') return null;
+        const compact = items.map((item) => ({
+          title: item.title,
+          source: item.source,
+          category: item.category,
+          summary: item.summary,
+          publishedAt: item.publishedAt,
+          url: item.url
+        }));
+        const prompt = [
+          'Rank the following Formula 1 news stories from most relevant and interesting to least relevant.',
+          'Return only a JSON array of URLs in the selected order. Keep at most 8 items.',
+          'Prioritize official updates, race weekend implications, driver market moves, team developments, technical changes, FIA decisions, and strong mainstream reporting.',
+          'Avoid duplicates, rumor-only pieces, and generic roundup articles.',
+          JSON.stringify(compact, null, 2)
+        ].join('\n\n');
+
+        try {
+          const result = await window.puter.ai.chat(prompt);
+          const text = extractPuterText(result);
+          const match = text.match(/\[[\s\S]*\]/);
+          if (!match) return null;
+          const parsed = JSON.parse(match[0]);
+          if (!Array.isArray(parsed)) return null;
+          return parsed.map(String).filter(Boolean);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function scoreByUrlOrder(items, orderedUrls) {
+        if (!Array.isArray(orderedUrls) || !orderedUrls.length) return heuristicRank(items);
+        const lookup = new Map(orderedUrls.map((url, index) => [url, index]));
+        const ranked = [...items].sort((a, b) => {
+          const aRank = lookup.has(a.url) ? lookup.get(a.url) : Number.MAX_SAFE_INTEGER;
+          const bRank = lookup.has(b.url) ? lookup.get(b.url) : Number.MAX_SAFE_INTEGER;
+          if (aRank !== bRank) return aRank - bRank;
+          return heuristicRank([a, b])[0] === a ? -1 : 1;
+        });
+        const seen = new Set();
+        return ranked.filter((item) => {
+          if (seen.has(item.url)) return false;
+          seen.add(item.url);
+          return true;
+        });
+      }
+
+      function getFilteredArticles() {
+        const term = state.search.trim().toLowerCase();
+        return state.articles.filter((item) => {
+          const categoryMatch = state.category === 'all' || item.category === state.category;
+          const sourceMatch = state.source === 'all' || item.source === state.source;
+          const text = `${item.title} ${item.summary} ${item.source} ${item.category}`.toLowerCase();
+          const searchMatch = !term || text.includes(term);
+          return categoryMatch && sourceMatch && searchMatch;
+        });
+      }
+
+      function buildChip(label, value, active, onClick) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `chip${active ? ' active' : ''}`;
+        button.textContent = label;
+        button.addEventListener('click', onClick);
+        button.dataset.value = value;
+        return button;
+      }
+
+      function renderControls() {
+        categoryChips.innerHTML = '';
+        categoryOrder.forEach((category) => {
+          const label = categoryLabels[category] || category;
+          categoryChips.appendChild(buildChip(label, category, state.category === category, () => {
+            state.category = category;
+            renderControls();
+            renderList();
+          }));
+        });
+
+        sourceChips.innerHTML = '';
+        const sources = [...new Set(state.articles.map((article) => article.source))].sort((a, b) => a.localeCompare(b));
+        sourceChips.appendChild(buildChip('All sources', 'all', state.source === 'all', () => {
+          state.source = 'all';
+          renderControls();
+          renderList();
+        }));
+        sources.forEach((source) => {
+          sourceChips.appendChild(buildChip(source, source, state.source === source, () => {
+            state.source = source;
+            renderControls();
+            renderList();
+          }));
+        });
+
+        const topSources = sources.slice(0, 5);
+        sourceStack.innerHTML = topSources.map((source) => `<div class="pulse-item"><strong>Source</strong><span>${escapeHtml(source)}</span></div>`).join('');
+        statSources.textContent = String(sources.length);
+      }
+
+      function thumbMarkup(item) {
+        if (item.image) {
+          return `<div class="thumb"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}"></div>`;
+        }
+        const accent = hashColor(item.source || item.category || item.title);
+        const initials = (item.source || item.category || 'F1').split(/\s+/).slice(0, 2).map((part) => part[0] || '').join('').toUpperCase();
+        return `<div class="thumb" style="background:${accent}"><div class="thumb-fallback">${escapeHtml(initials || 'F1')}<small>${escapeHtml(item.category || 'Paddock')}</small></div></div>`;
+      }
+
+      function cardMarkup(item) {
+        const age = timeAgo(item.publishedAt);
+        const badges = [`<span class="badge">${escapeHtml(item.category || 'Paddock')}</span>`, `<span class="badge-soft">${escapeHtml(age)}</span>`];
+        return `
+          <article class="article-card">
+            ${thumbMarkup(item)}
+            <div class="article-body">
+              <div class="article-meta">
+                <div class="article-badges">${badges.join('')}</div>
+                <div class="article-source">${escapeHtml(item.source || 'F1 News')}</div>
+              </div>
+              <h3 class="article-title">${escapeHtml(item.title)}</h3>
+              <p class="article-summary">${escapeHtml(item.summary)}</p>
+              <div class="article-footer">
+                <a class="article-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Read original</a>
+                <span class="article-source">${escapeHtml(item.publishedAt ? new Date(item.publishedAt).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Fresh')}</span>
+              </div>
+            </div>
+          </article>`;
+      }
+
+      function renderList() {
+        const filtered = getFilteredArticles();
+        state.filtered = filtered;
+        statShown.textContent = String(filtered.length);
+        statUpdated.textContent = filtered.length ? timeAgo(filtered[0].publishedAt) : '--';
+        listMeta.textContent = `${filtered.length} story${filtered.length === 1 ? '' : 's'} shown out of ${state.articles.length}. Scroll the list for more, or narrow it with the filters above.`;
+
+        if (!filtered.length) {
+          newsList.innerHTML = `<div class="empty">No stories match the current filter set. Try another category, a different source, or clear the search field.</div>`;
+          return;
+        }
+
+        newsList.innerHTML = filtered.slice(0, ARTICLE_LIMIT).map(cardMarkup).join('');
+      }
+
+      function readCache() {
+        try {
+          const raw = localStorage.getItem(NEWS_CACHE_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed?.articles) ? parsed.articles : null;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function writeCache(articles) {
+        try {
+          localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({ storedAt: new Date().toISOString(), articles }));
+        } catch (error) {
+          // Ignore storage failures.
+        }
+      }
+
+      async function fetchArticles(force = false) {
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = 'Refreshing...';
+        try {
+          const response = await fetch(PROXY_URL, { cache: force ? 'no-store' : 'default' });
+          if (!response.ok) throw new Error(`News proxy returned ${response.status}`);
+          const payload = await response.json();
+          const normalized = (payload.articles || []).map(normalizeArticle).filter((item) => item.title && item.url);
+          const immediate = heuristicRank(normalized).slice(0, ARTICLE_LIMIT);
+          state.articles = immediate;
+          renderControls();
+          renderList();
+          writeCache(immediate);
+
+          const rankedUrls = await Promise.race([
+            rankWithPuter(normalized),
+            new Promise((resolve) => setTimeout(() => resolve(null), 4000))
+          ]);
+
+          if (Array.isArray(rankedUrls) && rankedUrls.length) {
+            const ranked = scoreByUrlOrder(normalized, rankedUrls).slice(0, ARTICLE_LIMIT);
+            state.articles = ranked;
+            renderControls();
+            renderList();
+            writeCache(ranked);
+          }
+        } catch (error) {
+          const cached = readCache();
+          if (cached && cached.length) {
+            state.articles = cached.map(normalizeArticle);
+          } else {
+            state.articles = [];
+          }
+        } finally {
+          renderControls();
+          renderList();
+          refreshBtn.disabled = false;
+          refreshBtn.textContent = 'Refresh stories';
+        }
+      }
+
+      searchInput.addEventListener('input', () => {
+        state.search = searchInput.value;
+        renderList();
+      });
+      refreshBtn.addEventListener('click', () => fetchArticles(true));
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') fetchArticles();
+      });
+
+      const cached = readCache();
+      if (cached && cached.length) {
+        state.articles = cached.map(normalizeArticle);
+        renderControls();
+        renderList();
+      }
+
+      fetchArticles();
+    })();
+  </script>
+</body>
+</html>
