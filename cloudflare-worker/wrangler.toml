@@ -1,0 +1,3 @@
+name = "f1-news-worker"
+main = "f1-news-worker.js"
+compatibility_date = "2026-04-29"

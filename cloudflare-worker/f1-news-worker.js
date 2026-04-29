@@ -1,7 +1,14 @@
 const FEEDS = [
-  { name: 'BBC Sport Formula 1', url: 'https://feeds.bbci.co.uk/sport/formula1/rss.xml' },
-  { name: 'Google News F1', url: 'https://news.google.com/rss/search?q=%22Formula+1%22+OR+F1+OR+%22Grand+Prix%22&hl=en-US&gl=US&ceid=US:en' },
-  { name: 'Google News Motorsport', url: 'https://news.google.com/rss/search?q=motorsport+Formula+1&hl=en-US&gl=US&ceid=US:en' }
+  { name: 'Formula1.com', url: 'https://news.google.com/rss/search?q=site%3Aformula1.com+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'Sky Sports F1', url: 'https://news.google.com/rss/search?q=site%3Askysports.com%2Ff1+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'BBC Sport F1', url: 'https://feeds.bbci.co.uk/sport/formula1/rss.xml' },
+  { name: 'RaceFans', url: 'https://news.google.com/rss/search?q=site%3Aracefans.net+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'PlanetF1', url: 'https://news.google.com/rss/search?q=site%3Aplanetf1.com+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'RacingNews365', url: 'https://news.google.com/rss/search?q=site%3Aracingnews365.com+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'Motorsport.com', url: 'https://news.google.com/rss/search?q=site%3Amotorsport.com+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'The Race', url: 'https://news.google.com/rss/search?q=site%3Athe-race.com+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'The Athletic', url: 'https://news.google.com/rss/search?q=site%3Atheathletic.com+Formula+1&hl=en-US&gl=US&ceid=US:en' },
+  { name: 'NewsNow F1', url: 'https://news.google.com/rss/search?q=site%3Anewsnow.co.uk+Formula+1&hl=en-US&gl=US&ceid=US:en' }
 ];
 
 const KEYWORDS = [
@@ -179,7 +186,8 @@ export default {
     }
 
     const url = new URL(request.url);
-    if (request.method !== 'GET' || url.pathname !== '/f1-news') {
+    const allowedPaths = new Set(['/', '/f1-news', '/f1-news/']);
+    if (request.method !== 'GET' || !allowedPaths.has(url.pathname)) {
       return new Response('Not found', { status: 404 });
     }
 
@@ -198,7 +206,7 @@ export default {
     const results = await Promise.allSettled(feeds.map(fetchFeed));
     const articles = dedupeAndSort(
       results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []))
-    ).slice(0, 12);
+    ).slice(0, 10);
 
     const payload = {
       generatedAt: new Date().toISOString(),

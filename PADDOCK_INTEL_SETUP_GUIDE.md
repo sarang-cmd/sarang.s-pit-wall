@@ -54,36 +54,67 @@ If `wrangler login` does not finish in your environment, use the token path belo
 
 ### Token-Based Login Path
 
-Use this when browser login is blocked or inconvenient.
+Use this when browser login is blocked or inconvenient (for example, in remote containers or Codespaces). You will create a custom API token in the Cloudflare dashboard and then tell Wrangler to use it.
 
-1. Open the Cloudflare dashboard in your browser.
-2. Go to your profile settings.
-3. Open **API Tokens**.
-4. Create a token with Worker deployment permissions.
-5. Copy the token value.
-6. In the terminal, set it as an environment variable:
+#### Step 1: Create Your API Token
+
+1. Open the Cloudflare dashboard in your browser and sign in.
+2. Click your profile icon (bottom-left or top-right) and go to **My Profile**.
+3. In the left sidebar, click **API Tokens**.
+4. On the API Tokens page, you will see token templates and a **Create Custom Token** button.
+5. Click **Create Custom Token** (or click **Get started** under **Custom token** if visible).
+6. On the custom token creation form, configure these permissions:
+   - **Permissions**: Set to `Account`, `Workers` subsection, and grant these scopes:
+     - `Workers Scripts – Edit` (so you can deploy/update Workers)
+     - `Workers KV – Write` (optional, only if using KV storage)
+   - Alternatively, use the pre-built **Edit Cloudflare Workers** template if available (it will auto-select the right permissions).
+   - **Account Resources**: Select all accounts or the specific account where you want to deploy the Worker.
+   - **TTL (Time to Live)**: Set an expiration date (e.g., 90 days or manual) or leave as default. For testing, you can use a shorter TTL; for production, manage renewal.
+7. Click **Create Token** at the bottom.
+8. You will see a success screen with your new token value. **Copy the entire token string** (it will be a long alphanumeric string).
+   - **Note:** This is the only time you will see the full token. If you close the page without copying, you must delete and recreate it.
+9. Store the token safely (do not commit it to Git or share publicly).
+
+#### Step 2: Get Your Cloudflare Account ID
+
+1. In the Cloudflare dashboard, go to the homepage or any zone.
+2. On the right-hand side under **Account** (or in the sidebar), locate your **Account ID**. It is a 32-character hexadecimal string (e.g., `abc123def456...`).
+3. Copy this ID; you will need it next.
+
+#### Step 3: Set Environment Variables in Your Terminal
+
+In your terminal (the same one where you will run `wrangler deploy`), run:
 
 ```bash
-export CLOUDFLARE_API_TOKEN='your-token-here'
+export CLOUDFLARE_API_TOKEN='your-copied-token-string-here'
+export CLOUDFLARE_ACCOUNT_ID='your-copied-account-id-here'
 ```
 
-7. Find your Cloudflare account ID in the dashboard and set it too:
+Replace the placeholder values with the actual token and account ID you copied above.
 
-```bash
-export CLOUDFLARE_ACCOUNT_ID='your-account-id-here'
-```
+#### Step 4: Verify Wrangler Can See Your Account
 
-8. Verify Wrangler can see your account:
+Run:
 
 ```bash
 wrangler whoami
 ```
 
-9. Deploy with Wrangler as usual:
+If set up correctly, Wrangler will print your account name and email. If you see an error about authentication, double-check:
+- The token is pasted correctly (no extra spaces or truncation).
+- The account ID is correct.
+- The token permissions include Worker deployment rights.
+- The token has not expired.
+
+#### Step 5: Deploy with Wrangler
+
+Now deploy the Worker as usual:
 
 ```bash
 wrangler deploy
 ```
+
+Wrangler will use the environment variables to authenticate and deploy your Worker to Cloudflare.
 
 If you prefer not to install anything, skip the terminal steps and use the Cloudflare dashboard route below.
 
@@ -139,17 +170,48 @@ wrangler deploy
 https://your-worker.your-subdomain.workers.dev/f1-news
 ```
 
-### Option B: Deploy in the Cloudflare Dashboard
+### Option B: Deploy in the Cloudflare Dashboard (detailed)
 
-Use this if you want to click through the UI.
+Use this path if you prefer the Cloudflare web UI. The steps below walk through creating a worker, setting environment variables, configuring the route, and testing the deployment.
 
-1. Open the Cloudflare dashboard.
-2. Go to **Workers & Pages**.
-3. Create a new Worker.
-4. Delete the starter code in the editor.
-5. Paste the contents of [cloudflare-worker/f1-news-worker.js](cloudflare-worker/f1-news-worker.js).
-6. Save and deploy.
-7. Open the deployed route ending in `/f1-news`.
+1. Open the Cloudflare dashboard and sign in to your account.
+2. In the left-hand menu choose **Workers & Pages** → **Workers**.
+3. Create a new Worker:
+  - Click **Create a Service** (recommended for multi-file services) or **Create a Worker** (quick single-file editor).
+  - Give it a name like `f1-news-worker`.
+4. Replace the starter code:
+  - In the Worker editor delete the starter template code.
+  - Copy the contents of [cloudflare-worker/f1-news-worker.js](cloudflare-worker/f1-news-worker.js) and paste it into the editor.
+  - Ensure the editor is set to the correct language (JavaScript) and mode (module/compiled) if prompted.
+5. Add any environment variables or secrets the Worker needs:
+  - Click **Settings** (or the gear icon) for the Worker, then **Variables** or **Environment variables**.
+  - Add `EXTRA_NEWS_FEED_URL` and `EXTRA_NEWS_FEED_NAME` if you want to inject an extra feed without editing code.
+  - For sensitive tokens (not required by this Worker by default) use **Secrets** so values are encrypted.
+6. Configure routes (how the Worker is reached):
+  - If you want the Worker to be reachable at `https://<your-domain>/f1-news`, add a Route that maps the pattern `example.com/f1-news` to the Worker.
+  - If you do not have a custom domain, you can use the Workers subdomain auto-generated by Cloudflare. After saving the Worker you will get a `workers.dev` URL such as `https://<your-worker>.<account>.workers.dev` which you can append `/f1-news` to (see step 8).
+7. Save and deploy the Worker:
+  - Click **Save and Deploy** (or **Deploy**) in the editor.
+  - Deployment is immediate; the UI will confirm success or show errors.
+8. Find and verify the deployed URL:
+  - If you configured a custom route, use that URL (for example `https://example.com/f1-news`).
+  - If you used the workers.dev subdomain, open the worker's page in the dashboard and copy the `workers.dev` URL. The Worker entry should be reachable at `https://<your-worker>.workers.dev/f1-news` (append `/f1-news` if your script expects that path).
+9. Test the Worker response:
+  - Open the URL in a browser. You should see JSON like the example in Step 2.
+  - If the dashboard offers a **Quick Preview** or **View Live** button, you can use that to inspect responses and logs.
+10. Inspect logs and errors (if needed):
+  - In the Worker editor use the **Logs** or **Inspector** panel to see runtime logs and any exceptions.
+  - Common issues: missing environment variables, feed network errors, or XML parsing errors.
+11. (Optional) Bindings and durable storage:
+  - If you need caching across requests beyond Cloudflare's built-in edge cache, consider binding a KV namespace or Durable Object in the Worker settings and updating the code accordingly.
+
+Notes & tips:
+- Make sure the Worker route matches the path your dashboard will call. If the dashboard expects `/f1-news`, ensure that route or the worker's path includes that suffix.
+- If your Worker returns HTML in the preview but the dashboard expects JSON, open the route directly and confirm the response Content-Type and body are JSON.
+- Use the dashboard's **Environment** selector to test `preview` vs `production` environments if you added environment-specific variables.
+- For CORS or cross-origin requests from the dashboard host, ensure the Worker sets `Access-Control-Allow-Origin` appropriately (the provided worker includes standard JSON response headers; verify if you run into CORS errors).
+
+When completed you will have a live Worker endpoint to paste into the dashboard configuration (see Step 3 below).
 
 ## Step 2: Verify the Worker Works
 
