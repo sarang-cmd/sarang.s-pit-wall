@@ -786,9 +786,7 @@ async function fetchYouTubeVideos(channelList, sectionId, title) {
     
     for (const channel of channelList.slice(0, 4)) {
       try {
-        // Using YouTube's public feed (no API key needed)
-        const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel.id}`;
-        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`);
+        const response = await fetch(`/api/youtube-feed?channel_id=${encodeURIComponent(channel.id)}`);
         const data = await response.json();
         
         if (data.contents) {

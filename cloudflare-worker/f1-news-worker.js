@@ -128,6 +128,25 @@ function parseRss(xmlText, feedName, feedUrl) {
   return items;
 }
 
+async function fetchYouTubeFeed(channelId) {
+  const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`;
+  try {
+    const response = await fetch(feedUrl, {
+      headers: {
+        'user-agent': 'Mozilla/5.0 (compatible; SarangPitWall/1.0)'
+      }
+    });
+
+    if (!response.ok) {
+      return '';
+    }
+
+    return await response.text();
+  } catch {
+    return '';
+  }
+}
+
 async function fetchFeed(feed) {
   const response = await fetch(feed.url, {
     headers: {
@@ -186,8 +205,33 @@ export default {
     }
 
     const url = new URL(request.url);
+    if (request.method === 'GET' && url.pathname === '/api/youtube-feed') {
+      const channelId = url.searchParams.get('channel_id');
+      if (!channelId) {
+        return new Response(JSON.stringify({ error: 'Missing channel_id' }), {
+          status: 400,
+          headers: { 'content-type': 'application/json; charset=utf-8' }
+        });
+      }
+
+      const cache = caches.default;
+      const cacheKey = new Request(url.toString(), request);
+      const cached = await cache.match(cacheKey);
+      if (cached) {
+        return cached;
+      }
+
+      const xmlText = await fetchYouTubeFeed(channelId);
+      const response = jsonResponse({ contents: xmlText || '' }, 300);
+      ctx.waitUntil(cache.put(cacheKey, response.clone()));
+      return response;
+    }
+
     const allowedPaths = new Set(['/f1-news', '/f1-news/']);
     if (request.method !== 'GET' || !allowedPaths.has(url.pathname)) {
+      if (env?.ASSETS) {
+        return env.ASSETS.fetch(request);
+      }
       return new Response('Not found', { status: 404 });
     }
 

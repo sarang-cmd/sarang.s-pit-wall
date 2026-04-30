@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "n",
+  "main": "cloudflare-worker/f1-news-worker.js",
   "compatibility_date": "2026-04-29",
   "observability": {
     "enabled": true

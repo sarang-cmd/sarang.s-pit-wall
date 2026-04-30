@@ -2693,6 +2693,35 @@ body.intel-open { overflow: hidden; }
 // Global variable to store next race time (updated by renderCalendar)
 let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
 
+let tickerData = {
+  wdc: { val: 'ANTONELLI', pts: '72 pts' },
+  wcc: { val: 'MERCEDES', pts: '135 pts' },
+  next: { val: 'MIAMI GP', pts: 'MAY 3' },
+  winner: { val: 'ANTONELLI', pts: 'RACE WINNER' },
+  fl: { val: 'RUSSELL', pts: '1:28.411' },
+  fastPit: { val: 'MCLAREN', pts: '1.94s' },
+  ver: { val: '−60', pts: 'P9' },
+  rookie: { val: 'LINDBLAD', pts: '4 pts' }
+};
+window.tickerData = tickerData;
+
+function updateTicker() {
+  const items = [
+    { sym: 'WDC', val: tickerData.wdc.val, pts: tickerData.wdc.pts },
+    { sym: 'WCC', val: tickerData.wcc.val, pts: tickerData.wcc.pts },
+    { sym: 'NEXT', val: tickerData.next.val, pts: tickerData.next.pts },
+    { sym: 'WINNER', val: tickerData.winner.val, pts: tickerData.winner.pts },
+    { sym: 'FL', val: tickerData.fl.val, pts: tickerData.fl.pts },
+    { sym: 'FAST PIT', val: tickerData.fastPit.val, pts: tickerData.fastPit.pts },
+    { sym: 'VER', val: tickerData.ver.val, pts: tickerData.ver.pts },
+    { sym: 'ROOKIE', val: tickerData.rookie.val, pts: tickerData.rookie.pts }
+  ];
+  const mk = (it) => `<span class="tick"><span class="sym">${it.sym}</span> <span class="val">${it.val}</span> <span class="pts">${it.pts}</span></span><span class="tick tick-dot">◆</span>`;
+  const half = items.map(mk).join('');
+  const tkElem = document.getElementById('tkTrack');
+  if (tkElem) tkElem.innerHTML = half + half;
+}
+
 (function(){
   const pad = (n) => String(n).padStart(2,'0');
   function tick() {
@@ -2711,35 +2740,6 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
 })();
 
 (function(){
-  // Global data storage for ticker updates
-  let tickerData = {
-    wdc: { val: 'ANTONELLI', pts: '72 pts' },
-    wcc: { val: 'MERCEDES', pts: '135 pts' },
-    next: { val: 'MIAMI GP', pts: 'MAY 3' },
-    winner: { val: 'ANTONELLI', pts: 'RACE WINNER' },
-    fl: { val: 'RUSSELL', pts: '1:28.411' },
-    fastPit: { val: 'MCLAREN', pts: '1.94s' },
-    ver: { val: '−60', pts: 'P9' },
-    rookie: { val: 'LINDBLAD', pts: '4 pts' }
-  };
-
-  function updateTicker() {
-    const items = [
-      { sym: 'WDC', val: tickerData.wdc.val, pts: tickerData.wdc.pts },
-      { sym: 'WCC', val: tickerData.wcc.val, pts: tickerData.wcc.pts },
-      { sym: 'NEXT', val: tickerData.next.val, pts: tickerData.next.pts },
-      { sym: 'WINNER', val: tickerData.winner.val, pts: tickerData.winner.pts },
-      { sym: 'FL', val: tickerData.fl.val, pts: tickerData.fl.pts },
-      { sym: 'FAST PIT', val: tickerData.fastPit.val, pts: tickerData.fastPit.pts },
-      { sym: 'VER', val: tickerData.ver.val, pts: tickerData.ver.pts },
-      { sym: 'ROOKIE', val: tickerData.rookie.val, pts: tickerData.rookie.pts }
-    ];
-    const mk = (it) => `<span class="tick"><span class="sym">${it.sym}</span> <span class="val">${it.val}</span> <span class="pts">${it.pts}</span></span><span class="tick tick-dot">◆</span>`;
-    const half = items.map(mk).join('');
-    const tkElem = document.getElementById('tkTrack');
-    if (tkElem) tkElem.innerHTML = half + half;
-  }
-
   updateTicker();
 })();
 
@@ -3614,11 +3614,10 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
     const videos = [];
     const fetchPromises = channelList.slice(0, channelsToUse).map(async (channel) => {
       try {
-        const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel.id}`;
         const controller = new AbortController();
         const timeId = setTimeout(() => controller.abort(), timeout);
         
-        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`, {
+        const response = await fetch(`/api/youtube-feed?channel_id=${encodeURIComponent(channel.id)}`, {
           signal: controller.signal
         });
         clearTimeout(timeId);
