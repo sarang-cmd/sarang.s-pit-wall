@@ -9,6 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,800;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      document.documentElement.classList.add('embed-mode');
+    }
+  </script>
   <style>
     :root {
       --carbon: #0a0a0a;
@@ -46,6 +51,35 @@
       max-width: 1440px;
       margin: 0 auto;
       padding: 28px;
+    }
+
+    .embed-mode body {
+      background: var(--paper);
+      min-height: auto;
+    }
+
+    .embed-mode .page {
+      max-width: none;
+      padding: 0;
+    }
+
+    .embed-mode .shell {
+      border: 0;
+      box-shadow: none;
+    }
+
+    .embed-mode .topbar,
+    .embed-mode .hero,
+    .embed-mode .filters-panel,
+    .embed-mode .footer {
+      display: none;
+    }
+
+    .embed-mode .list-panel {
+      margin: 0;
+      border: 0;
+      border-top: 1px solid var(--rule);
+      border-radius: 0;
     }
 
     .shell {

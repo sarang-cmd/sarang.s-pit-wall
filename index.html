@@ -822,7 +822,7 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
 }
 .main-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr 1fr;
+  grid-template-columns: 0.95fr 0.95fr 1.35fr;
   border: 2px solid var(--ink);
   background: var(--paper);
 }
@@ -1067,7 +1067,12 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
 .pod-driver-team { font-size: 10px; color: var(--ink-3); margin-top: 3px; }
 .pod-time { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-2); font-weight: 500; }
 
-.news-block { padding: 0; }
+.news-block {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
 .news-item {
   padding: 16px 24px;
   border-bottom: 1px solid var(--rule-light);
@@ -1973,6 +1978,7 @@ body.intel-open { overflow: hidden; }
 .intel-card {
   position: relative;
   width: min(1120px, 100%);
+  height: min(90vh, 920px);
   max-height: min(90vh, 980px);
   display: flex;
   flex-direction: column;
@@ -2060,7 +2066,7 @@ body.intel-open { overflow: hidden; }
 .intel-frame {
   width: 100%;
   flex: 1 1 auto;
-  min-height: 0;
+  min-height: 460px;
   border: 0;
   background: var(--paper);
 }
@@ -2492,7 +2498,7 @@ body.intel-open { overflow: hidden; }
         </div>
         <p class="intel-sub">A compact preview of the latest stories. Open the full backlog when you are ready.</p>
       </header>
-      <iframe class="intel-frame" src="news.html" title="Paddock Intel preview"></iframe>
+      <iframe class="intel-frame" src="news.html?embed=1" title="Paddock Intel preview"></iframe>
       <div class="intel-footer">
         <span class="intel-note">Same dashboard, fuller log.</span>
         <div class="intel-actions">
@@ -2614,9 +2620,14 @@ body.intel-open { overflow: hidden; }
   const openButtons = [document.getElementById('openIntelModal')].filter(Boolean);
   const closeTargets = modal ? modal.querySelectorAll('[data-close]') : [];
   const closeButton = modal && modal.querySelector('.intel-close');
+  const frame = modal && modal.querySelector('.intel-frame');
   if (!modal || !openButtons.length) return;
 
   function open() {
+    if (frame) {
+      const source = 'news.html?embed=1&t=' + Date.now();
+      frame.setAttribute('src', source);
+    }
     modal.hidden = false;
     requestAnimationFrame(() => modal.classList.add('open'));
     document.body.classList.add('intel-open');
@@ -2747,6 +2758,7 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
 })();
 </script>
 
+<script src="https://js.puter.com/v2/"></script>
 <script>
   window.__NEWS_PROXY_URL__ = 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
 </script>
@@ -2765,6 +2777,48 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
   const NEWS_REFRESH_MS = 30 * 60 * 1000;
   const NEWS_CACHE_KEY = 'pw-news-cache';
   const NEWS_LIMIT = 15;
+  const NEWS_FALLBACK_ITEMS = [
+    {
+      title: 'F1 Official: latest race-weekend updates and paddock briefings',
+      summary: 'Official Formula 1 updates covering sessions, team updates, and post-race reaction.',
+      url: 'https://www.formula1.com/en/latest',
+      source: 'Formula1.com',
+      publishedAt: '',
+      category: 'Race Weekend'
+    },
+    {
+      title: 'BBC Sport: Formula 1 latest headlines and analysis',
+      summary: 'Breaking stories and analysis from BBC Sport\'s Formula 1 desk.',
+      url: 'https://www.bbc.com/sport/formula1',
+      source: 'BBC Sport',
+      publishedAt: '',
+      category: 'Team News'
+    },
+    {
+      title: 'Sky Sports F1: paddock stories and race-day updates',
+      summary: 'Live desk updates on performance trends, strategy swings, and championship momentum.',
+      url: 'https://www.skysports.com/f1/news',
+      source: 'Sky Sports F1',
+      publishedAt: '',
+      category: 'Paddock'
+    },
+    {
+      title: 'The Race: technical and strategic F1 coverage',
+      summary: 'Technical explainers and strategy context for race weekends and development cycles.',
+      url: 'https://www.the-race.com/formula-1/',
+      source: 'The Race',
+      publishedAt: '',
+      category: 'Technical'
+    },
+    {
+      title: 'Motorsport.com F1: driver market and FIA update tracker',
+      summary: 'Daily feed of transfer talk, FIA notes, and team-development reporting.',
+      url: 'https://www.motorsport.com/f1/news/',
+      source: 'Motorsport.com',
+      publishedAt: '',
+      category: 'Driver Market'
+    }
+  ];
 
   const TEAM_COLORS = {
     'Mercedes': 'var(--mercedes)',
@@ -3098,6 +3152,57 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
     return { title, summary, url, source, publishedAt, category, index };
   }
 
+  function extractPuterText(result) {
+    if (typeof result === 'string') return result;
+    if (!result || typeof result !== 'object') return '';
+    return result.text || result.content || result.message || result.response || '';
+  }
+
+  async function rankNewsWithPuter(items) {
+    if (!window.puter || !window.puter.ai || typeof window.puter.ai.chat !== 'function') return null;
+
+    const compact = items.slice(0, 40).map((item) => ({
+      title: item.title,
+      source: item.source,
+      category: item.category,
+      summary: item.summary,
+      publishedAt: item.publishedAt,
+      url: item.url
+    }));
+
+    const prompt = [
+      'Rank these Formula 1 stories from highest fan relevance to lowest.',
+      'Return only a JSON array of URLs in ranked order.',
+      'Prioritize race weekend updates, official updates, major team and driver stories, and high-quality sourcing.',
+      JSON.stringify(compact)
+    ].join('\n\n');
+
+    try {
+      const result = await window.puter.ai.chat(prompt);
+      const text = extractPuterText(result);
+      const match = text.match(/\[[\s\S]*\]/);
+      if (!match) return null;
+      const parsed = JSON.parse(match[0]);
+      if (!Array.isArray(parsed)) return null;
+      return parsed.map(String).filter(Boolean);
+    } catch {
+      return null;
+    }
+  }
+
+  function rankByUrlOrder(items, orderedUrls) {
+    if (!Array.isArray(orderedUrls) || !orderedUrls.length) return items;
+    const lookup = new Map(orderedUrls.map((url, idx) => [url, idx]));
+    return [...items]
+      .sort((a, b) => {
+        const aRank = lookup.has(a.url) ? lookup.get(a.url) : Number.MAX_SAFE_INTEGER;
+        const bRank = lookup.has(b.url) ? lookup.get(b.url) : Number.MAX_SAFE_INTEGER;
+        if (aRank !== bRank) return aRank - bRank;
+        return (Date.parse(b.publishedAt || '') || 0) - (Date.parse(a.publishedAt || '') || 0);
+      })
+      .filter((item, index, all) => all.findIndex((entry) => entry.url === item.url) === index);
+  }
+
   function renderNews(items){
     if (!newsBlock) return;
     if (!items.length) return;
@@ -3168,12 +3273,28 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
       const response = await fetch(NEWS_PROXY_URL, { cache: 'no-store' });
       if (!response.ok) throw new Error(`News proxy returned ${response.status}`);
       const payload = await response.json();
-      const articles = (payload.articles || [])
+      let articles = (payload.articles || [])
         .map(normalizeNewsArticle)
         .filter(item => item.title && item.url)
         .slice(0, NEWS_LIMIT);
 
-      if (!articles.length) return;
+      if (!articles.length) {
+        const cached = readNewsCache();
+        if (cached && Array.isArray(cached.articles) && cached.articles.length) {
+          articles = cached.articles.map(normalizeNewsArticle).slice(0, NEWS_LIMIT);
+        } else {
+          articles = NEWS_FALLBACK_ITEMS.map(normalizeNewsArticle).slice(0, NEWS_LIMIT);
+        }
+      }
+
+      const rankedUrls = await Promise.race([
+        rankNewsWithPuter(articles),
+        new Promise((resolve) => setTimeout(() => resolve(null), 2500))
+      ]);
+      if (Array.isArray(rankedUrls) && rankedUrls.length) {
+        articles = rankByUrlOrder(articles, rankedUrls).slice(0, NEWS_LIMIT);
+      }
+
       renderNews(articles);
       writeNewsCache(articles);
     } catch (error) {
@@ -3181,6 +3302,8 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
       const cached = readNewsCache();
       if (cached && Array.isArray(cached.articles) && cached.articles.length) {
         renderNews(cached.articles.map(normalizeNewsArticle).slice(0, NEWS_LIMIT));
+      } else {
+        renderNews(NEWS_FALLBACK_ITEMS.map(normalizeNewsArticle).slice(0, NEWS_LIMIT));
       }
     }
   }

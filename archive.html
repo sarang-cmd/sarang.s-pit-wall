@@ -271,14 +271,6 @@
     .page-chip.nav:hover {
       background: var(--racing);
       color: #fff;
-
-    .page-gap {
-      color: var(--ink-3);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.25em;
-      padding: 0 4px;
-    }
       border-color: var(--racing);
     }
 
@@ -347,10 +339,69 @@
   <nav class="pagination" id="pagination"></nav>
 </section>
 
+<script src="https://js.puter.com/v2/"></script>
 <script>
 const ARCHIVE_CACHE_KEY = 'pw-news-archive-cache';
+const SHARED_CACHE_KEYS = ['pw-news-cache', 'pw-news-page-cache'];
 const ARTICLES_PER_PAGE = 12;
 const PROXY_URL = 'https://f1-news-worker.sar-brawlstars.workers.dev/?v=2';
+
+const FALLBACK_ARCHIVE_ARTICLES = [
+  {
+    url: 'https://www.formula1.com/en/latest',
+    title: 'F1 Official: latest race weekend updates and paddock briefings',
+    summary: 'Official Formula 1 updates covering race-week sessions, team updates, and post-race reaction.',
+    source: 'Formula1.com',
+    category: 'Race Weekend',
+    publishedAt: '',
+    image: ''
+  },
+  {
+    url: 'https://www.bbc.com/sport/formula1',
+    title: 'BBC Sport: Formula 1 headlines and analysis',
+    summary: 'Breaking stories and analysis from BBC Sport\'s Formula 1 desk.',
+    source: 'BBC Sport',
+    category: 'Team News',
+    publishedAt: '',
+    image: ''
+  },
+  {
+    url: 'https://www.skysports.com/f1/news',
+    title: 'Sky Sports F1: paddock stories and race-day updates',
+    summary: 'Live desk coverage on strategy, performance trends, and weekend incidents.',
+    source: 'Sky Sports F1',
+    category: 'Paddock',
+    publishedAt: '',
+    image: ''
+  },
+  {
+    url: 'https://www.the-race.com/formula-1/',
+    title: 'The Race: technical and strategic F1 coverage',
+    summary: 'Technical and strategic explainers with context across the full grid.',
+    source: 'The Race',
+    category: 'Technical',
+    publishedAt: '',
+    image: ''
+  },
+  {
+    url: 'https://www.motorsport.com/f1/news/',
+    title: 'Motorsport.com F1: driver market and regulation notes',
+    summary: 'Driver movement, FIA updates, and race-weekend engineering context.',
+    source: 'Motorsport.com',
+    category: 'Driver Market',
+    publishedAt: '',
+    image: ''
+  },
+  {
+    url: 'https://www.racefans.net/',
+    title: 'RaceFans: independent paddock reporting and live context',
+    summary: 'Independent reporting on penalties, strategy calls, and competitive trends.',
+    source: 'RaceFans',
+    category: 'FIA',
+    publishedAt: '',
+    image: ''
+  }
+];
 
 function decodeHtmlEntities(text) {
   const textarea = document.createElement('textarea');
@@ -367,6 +418,19 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function normalizeArticle(raw, idx) {
+  return {
+    id: raw.id || `${raw.url || raw.link || '#'}|${raw.title || ''}|${idx}`,
+    url: raw.url || raw.link || '#',
+    title: decodeHtmlEntities(raw.title || raw.headline || ''),
+    summary: decodeHtmlEntities(raw.summary || raw.description || ''),
+    source: raw.source || 'F1 News',
+    category: raw.category || 'Paddock',
+    publishedAt: raw.publishedAt || raw.pubDate || '',
+    image: raw.image || raw.thumbnail || ''
+  };
+}
+
 function timeAgo(publishedAt) {
   if (!publishedAt) return 'Fresh';
   const published = new Date(publishedAt);
@@ -379,63 +443,55 @@ function timeAgo(publishedAt) {
   return `${days}d ago`;
 }
 
-async function fetchArchive() {
-  const archiveGrid = document.getElementById('archiveGrid');
-  const pagination = document.getElementById('pagination');
-  const emptyState = document.getElementById('emptyState');
+function extractPuterText(result) {
+  if (typeof result === 'string') return result;
+  if (!result || typeof result !== 'object') return '';
+  return result.text || result.content || result.message || result.response || '';
+}
+
+async function rankWithPuter(items) {
+  if (!window.puter || !window.puter.ai || typeof window.puter.ai.chat !== 'function') return null;
+
+  const compact = items.slice(0, 60).map((item) => ({
+    title: item.title,
+    source: item.source,
+    category: item.category,
+    summary: item.summary,
+    publishedAt: item.publishedAt,
+    url: item.url
+  }));
+
+  const prompt = [
+    'Rank these Formula 1 stories from most useful for a fan dashboard to least useful.',
+    'Return only a JSON array of story URLs in ranked order.',
+    'Prioritize official updates, race-weekend relevance, and high-quality reporting.',
+    JSON.stringify(compact)
+  ].join('\n\n');
 
   try {
-    // Try to fetch fresh articles (up to 500)
-    let articles = [];
-    let page = 1;
-    let hasMore = true;
-
-    while (articles.length < 500 && hasMore && page <= 5) {
-      try {
-        const response = await fetch(PROXY_URL + `&page=${page}`, { cache: 'no-store' });
-        if (!response.ok) break;
-        const payload = await response.json();
-        const newArticles = (payload.articles || [])
-          .map((raw, idx) => ({
-            id: `${raw.url}|${raw.title}|${idx}`,
-            url: raw.url || raw.link || '#',
-            title: decodeHtmlEntities(raw.title || raw.headline || ''),
-            summary: decodeHtmlEntities(raw.summary || raw.description || ''),
-            source: raw.source || 'F1 News',
-            category: raw.category || 'Paddock',
-            publishedAt: raw.publishedAt || raw.pubDate || '',
-            image: raw.image || raw.thumbnail || ''
-          }))
-          .filter(item => item.title && item.url);
-        
-        articles = articles.concat(newArticles);
-        hasMore = newArticles.length > 0;
-        page += 1;
-      } catch { hasMore = false; }
-    }
-
-    if (!articles.length) {
-      // Fallback to cache
-      const cached = readArchiveCache();
-      articles = cached.articles || [];
-    }
-
-    if (articles.length) {
-      // Save to cache
-      writeArchiveCache(articles);
-      renderArchive(articles);
-    } else {
-      emptyState.style.display = 'block';
-    }
-  } catch (error) {
-    console.error('Archive fetch failed:', error);
-    const cached = readArchiveCache();
-    if (cached.articles && cached.articles.length) {
-      renderArchive(cached.articles);
-    } else {
-      emptyState.style.display = 'block';
-    }
+    const result = await window.puter.ai.chat(prompt);
+    const text = extractPuterText(result);
+    const match = text.match(/\[[\s\S]*\]/);
+    if (!match) return null;
+    const parsed = JSON.parse(match[0]);
+    if (!Array.isArray(parsed)) return null;
+    return parsed.map(String).filter(Boolean);
+  } catch {
+    return null;
   }
+}
+
+function scoreByUrlOrder(items, orderedUrls) {
+  if (!Array.isArray(orderedUrls) || !orderedUrls.length) return items;
+  const lookup = new Map(orderedUrls.map((url, index) => [url, index]));
+  return [...items]
+    .sort((a, b) => {
+      const aRank = lookup.has(a.url) ? lookup.get(a.url) : Number.MAX_SAFE_INTEGER;
+      const bRank = lookup.has(b.url) ? lookup.get(b.url) : Number.MAX_SAFE_INTEGER;
+      if (aRank !== bRank) return aRank - bRank;
+      return (Date.parse(b.publishedAt || '') || 0) - (Date.parse(a.publishedAt || '') || 0);
+    })
+    .filter((item, index, all) => all.findIndex((entry) => entry.url === item.url) === index);
 }
 
 function readArchiveCache() {
@@ -448,6 +504,19 @@ function readArchiveCache() {
   }
 }
 
+function readSharedCache() {
+  return SHARED_CACHE_KEYS.flatMap((key) => {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed?.articles) ? parsed.articles : [];
+    } catch {
+      return [];
+    }
+  });
+}
+
 function writeArchiveCache(articles) {
   try {
     localStorage.setItem(ARCHIVE_CACHE_KEY, JSON.stringify({
@@ -457,20 +526,83 @@ function writeArchiveCache(articles) {
   } catch {}
 }
 
+function fallbackArticles() {
+  return FALLBACK_ARCHIVE_ARTICLES.map((article, idx) => normalizeArticle(article, idx));
+}
+
+async function fetchArchive() {
+  const emptyState = document.getElementById('emptyState');
+
+  try {
+    let articles = [];
+    let page = 1;
+    let hasMore = true;
+
+    while (articles.length < 500 && hasMore && page <= 5) {
+      try {
+        const response = await fetch(PROXY_URL + `&page=${page}`, { cache: 'no-store' });
+        if (!response.ok) break;
+        const payload = await response.json();
+        const newArticles = (payload.articles || []).map(normalizeArticle).filter((item) => item.title && item.url);
+        articles = articles.concat(newArticles);
+        hasMore = newArticles.length > 0;
+        page += 1;
+      } catch {
+        hasMore = false;
+      }
+    }
+
+    if (!articles.length) {
+      const cached = readArchiveCache();
+      articles = (cached.articles || []).map(normalizeArticle);
+    }
+    if (!articles.length) {
+      articles = readSharedCache().map(normalizeArticle);
+    }
+    if (!articles.length) {
+      articles = fallbackArticles();
+    }
+
+    const rankedUrls = await Promise.race([
+      rankWithPuter(articles),
+      new Promise((resolve) => setTimeout(() => resolve(null), 3000))
+    ]);
+    if (Array.isArray(rankedUrls) && rankedUrls.length) {
+      articles = scoreByUrlOrder(articles, rankedUrls);
+    }
+
+    if (articles.length) {
+      writeArchiveCache(articles);
+      renderArchive(articles);
+    } else {
+      emptyState.style.display = 'block';
+    }
+  } catch (error) {
+    console.error('Archive fetch failed:', error);
+    const cached = readArchiveCache();
+    const fallback = (cached.articles || []).map(normalizeArticle);
+    if (fallback.length) {
+      renderArchive(fallback);
+    } else {
+      emptyState.style.display = 'block';
+    }
+  }
+}
+
 function renderArchive(articles) {
   const archiveGrid = document.getElementById('archiveGrid');
   const pagination = document.getElementById('pagination');
   const emptyState = document.getElementById('emptyState');
 
-  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page') || '1');
-  const totalPages = Math.ceil(articles.length / ARTICLES_PER_PAGE);
+  const requestedPage = parseInt(new URLSearchParams(window.location.search).get('page') || '1', 10);
+  const totalPages = Math.max(1, Math.ceil(articles.length / ARTICLES_PER_PAGE));
+  const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
   const startIdx = (currentPage - 1) * ARTICLES_PER_PAGE;
   const endIdx = startIdx + ARTICLES_PER_PAGE;
   const pageArticles = articles.slice(startIdx, endIdx);
 
   emptyState.style.display = 'none';
 
-  // Render articles
   archiveGrid.innerHTML = pageArticles.map((article, idx) => `
     <a class="archive-card" href="${escapeHtml(article.url)}" target="_blank" rel="noopener noreferrer" style="animation-delay: ${idx * 0.05}s;">
       <div class="archive-thumb">
@@ -486,20 +618,17 @@ function renderArchive(articles) {
     </a>
   `).join('');
 
-  // Render pagination (Google-style)
   const pageNums = [];
   const maxVisible = 7;
-  
+
   if (totalPages <= maxVisible) {
     for (let i = 1; i <= totalPages; i++) pageNums.push(i);
   } else {
     pageNums.push(1);
     if (currentPage > 3) pageNums.push('...');
-    
     const start = Math.max(2, currentPage - 1);
     const end = Math.min(totalPages - 1, currentPage + 1);
     for (let i = start; i <= end; i++) pageNums.push(i);
-    
     if (currentPage < totalPages - 2) pageNums.push('...');
     pageNums.push(totalPages);
   }
@@ -514,7 +643,7 @@ function renderArchive(articles) {
     pagination.appendChild(prevBtn);
   }
 
-  pageNums.forEach(num => {
+  pageNums.forEach((num) => {
     if (num === '...') {
       const dots = document.createElement('span');
       dots.className = 'page-gap';
@@ -543,7 +672,6 @@ function renderArchive(articles) {
   }
 }
 
-// Initialize on load
 fetchArchive();
 </script>
 
