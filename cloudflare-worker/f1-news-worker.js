@@ -186,7 +186,7 @@ export default {
     }
 
     const url = new URL(request.url);
-    const allowedPaths = new Set(['/', '/f1-news', '/f1-news/']);
+    const allowedPaths = new Set(['/f1-news', '/f1-news/']);
     if (request.method !== 'GET' || !allowedPaths.has(url.pathname)) {
       return new Response('Not found', { status: 404 });
     }
