@@ -822,7 +822,7 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
 }
 .main-grid {
   display: grid;
-  grid-template-columns: 0.95fr 0.95fr 1.35fr;
+  grid-template-columns: 1fr 1fr 1.1fr;
   border: 2px solid var(--ink);
   background: var(--paper);
 }
@@ -992,7 +992,7 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
 }
 
 .con-row {
-  padding: 15px 24px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--rule-light);
   position: relative;
   transition: background 0.2s;
@@ -1011,14 +1011,14 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
   display: grid;
   grid-template-columns: 26px 1fr auto;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 9px;
+  gap: 10px;
+  margin-bottom: 6px;
 }
 .con-pos { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--ink-2); font-variant-numeric: tabular-nums; }
-.con-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
-.con-engine { font-size: 10px; color: var(--ink-3); margin-top: 2px; }
-.con-pts { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
-.con-bar { height: 4px; background: var(--paper-3); margin-top: 6px; position: relative; overflow: hidden; }
+.con-name { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 500; color: var(--ink); letter-spacing: -0.01em; }
+.con-engine { font-size: 10px; color: var(--ink-3); margin-top: 1px; }
+.con-pts { font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.con-bar { height: 4px; background: var(--paper-3); margin-top: 5px; position: relative; overflow: hidden; }
 .con-bar-fill {
   height: 100%;
   background: var(--team-color, var(--racing));
@@ -1026,6 +1026,18 @@ body.dark .cal-nav-btn:hover { background: var(--racing-hot); color: #000; borde
   transform: scaleX(0);
   animation: barGrowSlow 1.4s cubic-bezier(.3,.9,.3,1) both;
 }
+.con-stats {
+  font-size: 8px;
+  color: var(--ink-3);
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+.con-stats-item {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
 
 .podium-block { padding: 22px 24px; border-bottom: 1px solid var(--rule-light); }
 .podium-head {
@@ -2030,9 +2042,9 @@ body.intel-open { overflow: hidden; }
 .intel-head {
   display: flex;
   justify-content: space-between;
-  gap: 18px;
-  align-items: end;
-  padding: 28px 30px 18px;
+  gap: 16px;
+  align-items: flex-end;
+  padding: 24px 26px 16px;
   border-bottom: 1px solid var(--rule);
   flex-wrap: wrap;
 }
@@ -2073,10 +2085,10 @@ body.intel-open { overflow: hidden; }
 .intel-footer {
   display: flex;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   align-items: center;
   flex-wrap: wrap;
-  padding: 16px 30px 22px;
+  padding: 14px 26px 18px;
   border-top: 1px solid var(--rule);
 }
 .intel-note {
@@ -2117,6 +2129,8 @@ body.intel-open { overflow: hidden; }
   .intel-head, .intel-footer { padding-left: 16px; padding-right: 16px; }
   .intel-title { font-size: 24px; }
   .intel-sub { max-width: none; }
+}
+
 }
 
 /* ================ END COLOPHON STYLES ====================== */
@@ -2323,46 +2337,57 @@ body.intel-open { overflow: hidden; }
       <div class="con-row" style="--team-color: var(--mercedes); animation-delay:4.5s;">
         <div class="con-top"><div class="con-pos">01</div><div><div class="con-name">Mercedes-AMG</div><div class="con-engine">Mercedes PU · DEU</div></div><div class="con-pts">135</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:100%; animation-delay:5.5s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">2</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">1</span> pole</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--ferrari); animation-delay:4.58s;">
         <div class="con-top"><div class="con-pos">02</div><div><div class="con-name">Scuderia Ferrari</div><div class="con-engine">Ferrari PU · ITA</div></div><div class="con-pts">90</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:66%; animation-delay:5.55s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">1</span> win</span><span class="con-stats-item">🎯 <span class="con-poles">1</span> pole</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--mclaren); animation-delay:4.66s;">
         <div class="con-top"><div class="con-pos">03</div><div><div class="con-name">McLaren</div><div class="con-engine">Mercedes PU · GBR</div></div><div class="con-pts">46</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:34%; animation-delay:5.6s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--haas); animation-delay:4.74s;">
         <div class="con-top"><div class="con-pos">04</div><div><div class="con-name">Haas F1</div><div class="con-engine">Ferrari PU · USA</div></div><div class="con-pts">18</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:13%; animation-delay:5.65s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--redbull); animation-delay:4.82s;">
         <div class="con-top"><div class="con-pos">05</div><div><div class="con-name">Red Bull Racing</div><div class="con-engine">Red Bull Ford · AUT</div></div><div class="con-pts">16</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:12%; animation-delay:5.7s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--alpine); animation-delay:4.90s;">
         <div class="con-top"><div class="con-pos">06</div><div><div class="con-name">Alpine</div><div class="con-engine">Mercedes PU · FRA</div></div><div class="con-pts">16</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:12%; animation-delay:5.75s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--racingbulls); animation-delay:4.98s;">
         <div class="con-top"><div class="con-pos">07</div><div><div class="con-name">Racing Bulls</div><div class="con-engine">Red Bull Ford · ITA</div></div><div class="con-pts">14</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:10%; animation-delay:5.8s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--audi); animation-delay:5.06s;">
         <div class="con-top"><div class="con-pos">08</div><div><div class="con-name">Audi</div><div class="con-engine">Audi PU · DEU</div></div><div class="con-pts">2</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:2%; animation-delay:5.85s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--williams); animation-delay:5.14s;">
         <div class="con-top"><div class="con-pos">09</div><div><div class="con-name">Williams</div><div class="con-engine">Mercedes PU · GBR</div></div><div class="con-pts">2</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:2%; animation-delay:5.9s;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--aston); animation-delay:5.22s;">
         <div class="con-top"><div class="con-pos">10</div><div><div class="con-name">Aston Martin</div><div class="con-engine">Honda PU · GBR</div></div><div class="con-pts">0</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:0%;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
       <div class="con-row" style="--team-color: var(--cadillac); animation-delay:5.30s;">
         <div class="con-top"><div class="con-pos">11</div><div><div class="con-name">Cadillac</div><div class="con-engine">Ferrari PU · USA · NEW</div></div><div class="con-pts">0</div></div>
         <div class="con-bar"><div class="con-bar-fill" style="width:0%;"></div></div>
+        <div class="con-stats"><span class="con-stats-item">🏁 <span class="con-wins">0</span> wins</span><span class="con-stats-item">🎯 <span class="con-poles">0</span> poles</span></div>
       </div>
     </div>
 
@@ -3351,6 +3376,40 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
       const conRows = document.querySelectorAll('.con-row');
       let maxPts = 0;
       clist.forEach(c => maxPts = Math.max(maxPts, Number(c.points)));
+      
+      // Fetch constructor stats for the season
+      const constructorStats = {};
+      try {
+        const racesResponse = await fetch('https://api.jolpi.ca/ergast/f1/current/results.json?limit=1000');
+        const racesData = await racesResponse.json();
+        const allResults = racesData.MRData?.RaceTable?.Races || [];
+        
+        clist.forEach(c => {
+          const conName = c.Constructor.name;
+          constructorStats[conName] = { wins: 0, poles: 0 };
+        });
+        
+        allResults.forEach(race => {
+          if (race.Results && race.Results.length > 0) {
+            const winner = race.Results[0];
+            if (winner && winner.Constructor) {
+              const conName = winner.Constructor.name;
+              if (constructorStats[conName]) constructorStats[conName].wins++;
+            }
+            const qualifying = race.QualifyingResults;
+            if (qualifying && qualifying.length > 0) {
+              const poler = qualifying[0];
+              if (poler && poler.Constructor) {
+                const conName = poler.Constructor.name;
+                if (constructorStats[conName]) constructorStats[conName].poles++;
+              }
+            }
+          }
+        });
+      } catch (statsError) {
+        console.warn('Could not fetch constructor stats', statsError);
+      }
+      
       conRows.forEach((row, i) => {
         const c = clist[i];
         if(!c) return;
@@ -3360,6 +3419,16 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
         if(fill){
           const pct = maxPts? Math.round((Number(c.points)/maxPts)*100):0;
           fill.style.width = pct + '%';
+        }
+        
+        // Update constructor stats
+        const conName = c.Constructor.name;
+        const stats = constructorStats[conName];
+        if (stats) {
+          const winsEl = row.querySelector('.con-wins');
+          const polesEl = row.querySelector('.con-poles');
+          if (winsEl) winsEl.textContent = stats.wins;
+          if (polesEl) polesEl.textContent = stats.poles;
         }
       });
 
@@ -3450,135 +3519,176 @@ let nextRaceTime = new Date('2026-05-03T20:00:00Z').getTime();
 (function(){
   // Popular racing channels with F1 focus
   const RACING_CHANNELS = [
-    { id: 'UCp8nXxFZdSRpwvbp4dqnDDA', name: 'Driver61', icon: '📺' },
-    { id: 'UC1aQnfO-b9UhyKcSx-LoIGw', name: 'Motorsport Explained', icon: '🎙️' },
-    { id: 'UC-rL3J4Pf-IrJ0Bl2DBh_w', name: 'Chainbear', icon: '⚙️' },
-    { id: 'UCNplbkJzWvCpLq-r5qJ51hA', name: 'Peter Windsor', icon: '🏎️' },
-    { id: 'UC8eZ7qhQs6g7QNJCqWB5oA', name: 'Eric Vergne', icon: '⚡' },
-    { id: 'UCw1lxlVNKyM1OlqJHJNwz1Q', name: 'F1 Advice', icon: '💡' },
-    { id: 'UCCt-N6Ty_hTsjCmX3XWnrqA', name: 'Tech Analysis', icon: '🔧' },
-    { id: 'UCI2pnPR9h7-pN2KOH_j5f_w', name: 'F1Hub', icon: '📊' }
+    { id: 'UCp8nXxFZdSRpwvbp4dqnDDA', name: 'Driver61' },
+    { id: 'UC1aQnfO-b9UhyKcSx-LoIGw', name: 'Motorsport Explained' },
+    { id: 'UC-rL3J4Pf-IrJ0Bl2DBh_w', name: 'Chainbear' },
+    { id: 'UCNplbkJzWvCpLq-r5qJ51hA', name: 'Peter Windsor' },
+    { id: 'UC8eZ7qhQs6g7QNJCqWB5oA', name: 'Eric Vergne' },
+    { id: 'UCw1lxlVNKyM1OlqJHJNwz1Q', name: 'F1 Advice' },
+    { id: 'UCCt-N6Ty_hTsjCmX3XWnrqA', name: 'Tech Analysis' },
+    { id: 'UCI2pnPR9h7-pN2KOH_j5f_w', name: 'F1Hub' }
   ];
 
   // Top 20 F1 YouTubers (excluding official channels)
   const TOP_F1_YOUTUBERS = [
-    { id: 'UCP5thA36g_1ObVWo73-qsEA', name: 'Aidan Millward', icon: '🎯' },
-    { id: 'UCZwVDNXaXfuYMyCjx_R_pPA', name: 'Max Tech', icon: '⚡' },
-    { id: 'UCp2zpKy49WnMYG2aPo7e8oA', name: 'Lando Norris', icon: '🚀' },
-    { id: 'UC0jz0LWvmrIEcUYPO7F-2Jw', name: 'Automobilista Gaming', icon: '🎮' },
-    { id: 'UCh1EUMiMOLcGKHSFJBqVwSA', name: 'Top Gear', icon: '🏁' },
-    { id: 'UC8vYcM_vy_XfA4VVw9r9PHA', name: 'Clips Explained', icon: '📹' },
-    { id: 'UCYlQXOOEWZVjsJM1rSuv4BA', name: 'TheMo Plays', icon: '🎮' },
-    { id: 'UCH1yWm0Lh1qrGDDTXRWPPYQ', name: 'Formula1 Analizis', icon: '📈' },
-    { id: 'UCpQQPRSiQiKKTaAkqSdgOAg', name: 'Legends F1', icon: '👑' },
-    { id: 'UCyPYEYJMXQm0Wa78XlRPVlA', name: 'F1 Garage', icon: '🔧' },
-    { id: 'UC_VVK_fxq_JqPdxsF3YGNlA', name: 'Real Racing', icon: '🏎️' },
-    { id: 'UCJoWPPRDfZEqr-t8WzW-2VA', name: 'Vroom Vroom Guides', icon: '📚' },
-    { id: 'UC0Nqpz4D-L8Z1s6nOWRAK4g', name: 'Auto Bild', icon: '🎬' },
-    { id: 'UCsKTqN3b9vjbgS0f-gwLOpA', name: 'Beyond the Grid', icon: '🎙️' },
-    { id: 'UCM_G1PgLRwmH857NMPMvQvA', name: 'Harris F1', icon: '📺' },
-    { id: 'UC1E1pXWlGv1sULVy0zFxFww', name: 'The Race', icon: '🏁' },
-    { id: 'UC0Nqpz4D-L8Z1s6nOWRAK4g', name: 'Pit Wall Pass', icon: '🎯' },
-    { id: 'UCm1n3LlIxQGVs_wvfDnKyDQ', name: 'OnboardTV', icon: '🎥' },
-    { id: 'UCvMZJ_cIBxDTFjxGe0v2Gvw', name: 'Tavi F1 Insights', icon: '💬' },
-    { id: 'UC4rvjWi-vBXNlhEJLfY3G3w', name: 'Speed Matters', icon: '⚡' }
+    { id: 'UCP5thA36g_1ObVWo73-qsEA', name: 'Aidan Millward' },
+    { id: 'UCZwVDNXaXfuYMyCjx_R_pPA', name: 'Max Tech' },
+    { id: 'UCp2zpKy49WnMYG2aPo7e8oA', name: 'Lando Norris' },
+    { id: 'UC0jz0LWvmrIEcUYPO7F-2Jw', name: 'Automobilista Gaming' },
+    { id: 'UCh1EUMiMOLcGKHSFJBqVwSA', name: 'Top Gear' },
+    { id: 'UC8vYcM_vy_XfA4VVw9r9PHA', name: 'Clips Explained' },
+    { id: 'UCYlQXOOEWZVjsJM1rSuv4BA', name: 'TheMo Plays' },
+    { id: 'UCH1yWm0Lh1qrGDDTXRWPPYQ', name: 'Formula 1 Analysis' },
+    { id: 'UCpQQPRSiQiKKTaAkqSdgOAg', name: 'Legends F1' },
+    { id: 'UCyPYEYJMXQm0Wa78XlRPVlA', name: 'F1 Garage' },
+    { id: 'UC_VVK_fxq_JqPdxsF3YGNlA', name: 'Real Racing' },
+    { id: 'UCJoWPPRDfZEqr-t8WzW-2VA', name: 'Vroom Vroom Guides' },
+    { id: 'UC0Nqpz4D-L8Z1s6nOWRAK4g', name: 'Auto Bild' },
+    { id: 'UCsKTqN3b9vjbgS0f-gwLOpA', name: 'Beyond the Grid' },
+    { id: 'UCM_G1PgLRwmH857NMPMvQvA', name: 'Harris F1' },
+    { id: 'UC1E1pXWlGv1sULVy0zFxFww', name: 'The Race' },
+    { id: 'UCm1n3LlIxQGVs_wvfDnKyDQ', name: 'OnboardTV' },
+    { id: 'UCvMZJ_cIBxDTFjxGe0v2Gvw', name: 'Tavi F1 Insights' },
+    { id: 'UC4rvjWi-vBXNlhEJLfY3G3w', name: 'Speed Matters' },
+    { id: 'UCJoWPPRDfZEqr-t8WzW-2VA', name: 'Pit Wall Pass' }
   ];
 
-  // Hardcoded video data (can be replaced with API calls)
+  // Hardcoded video data (primary source when API fails)
   const RACING_VIDEOS = [
-    { channel: 'Driver61', title: '2026 F1 Season: What Changed?', views: '245K', date: '2w ago', thumbnail: '📺' },
-    { channel: 'Motorsport Explained', title: 'New F1 Technical Regulations', views: '187K', date: '3d ago', thumbnail: '🎙️' },
-    { channel: 'Chainbear', title: 'Why Mercedes is Winning', views: '312K', date: '1w ago', thumbnail: '⚙️' },
-    { channel: 'Peter Windsor', title: 'Driver Analysis: Best Newcomers', views: '156K', date: '5d ago', thumbnail: '🏎️' },
-    { channel: 'Eric Vergne', title: 'Formula E vs F1 Speed', views: '298K', date: '4d ago', thumbnail: '⚡' },
-    { channel: 'F1 Advice', title: 'How to Become an F1 Driver', views: '445K', date: '1d ago', thumbnail: '💡' },
-    { channel: 'Tech Analysis', title: 'DRS Wing Explained', views: '211K', date: '6d ago', thumbnail: '🔧' },
-    { channel: 'F1Hub', title: 'Standings: Mid-Season Update', views: '167K', date: '2d ago', thumbnail: '📊' }
+    { channel: 'Driver61', title: '2026 F1 Season: What Changed?', views: '245K', date: '2w ago', thumbnail: '📺', link: 'https://www.youtube.com/@Driver61' },
+    { channel: 'Motorsport Explained', title: 'New F1 Technical Regulations', views: '187K', date: '3d ago', thumbnail: '🎙️', link: 'https://www.youtube.com/@MotorsportExplained' },
+    { channel: 'Chainbear', title: 'Why Mercedes is Winning', views: '312K', date: '1w ago', thumbnail: '⚙️', link: 'https://www.youtube.com/@chainbearf1' },
+    { channel: 'Peter Windsor', title: 'Driver Analysis: Best Newcomers', views: '156K', date: '5d ago', thumbnail: '🏎️', link: 'https://www.youtube.com/@PeterWindsor' },
+    { channel: 'Eric Vergne', title: 'Formula E vs F1 Speed', views: '298K', date: '4d ago', thumbnail: '⚡', link: 'https://www.youtube.com/@EricVergneOfficial' },
+    { channel: 'F1 Advice', title: 'How to Become an F1 Driver', views: '445K', date: '1d ago', thumbnail: '💡', link: 'https://www.youtube.com/@F1Advice' },
+    { channel: 'Tech Analysis', title: 'DRS Wing Explained', views: '211K', date: '6d ago', thumbnail: '🔧', link: 'https://www.youtube.com/results?search_query=F1+DRS' },
+    { channel: 'F1Hub', title: 'Standings: Mid-Season Update', views: '167K', date: '2d ago', thumbnail: '📊', link: 'https://www.youtube.com/@F1Hub' }
   ];
 
   const F1_YOUTUBER_VIDEOS = [
-    { channel: 'Aidan Millward', title: 'F1 2026 Season Preview', views: '512K', date: '3d ago', thumbnail: '🎯' },
-    { channel: 'Max Tech', title: 'New Car Tech Breakdown', views: '428K', date: '1w ago', thumbnail: '⚡' },
-    { channel: 'Lando Norris', title: 'Behind the Scenes at McLaren', views: '689K', date: '2d ago', thumbnail: '🚀' },
-    { channel: 'Automobilista Gaming', title: 'Sim Racing Challenge', views: '334K', date: '5d ago', thumbnail: '🎮' },
-    { channel: 'Top Gear', title: 'F1 Legends Interview Series', views: '521K', date: '4d ago', thumbnail: '🏁' },
-    { channel: 'Clips Explained', title: 'Best Overtakes Explained', views: '267K', date: '2d ago', thumbnail: '📹' },
-    { channel: 'TheMo Plays', title: 'F1 Game Season 43', views: '189K', date: '1d ago', thumbnail: '🎮' },
-    { channel: 'Formula1 Analizis', title: 'Championship Math', views: '298K', date: '3d ago', thumbnail: '📈' },
-    { channel: 'Legends F1', title: 'Senna vs Prost: Who Won?', views: '621K', date: '6d ago', thumbnail: '👑' },
-    { channel: 'F1 Garage', title: 'Pit Stop Precision', views: '176K', date: '4d ago', thumbnail: '🔧' },
-    { channel: 'Real Racing', title: 'Data Analysis Deep Dive', views: '245K', date: '2w ago', thumbnail: '🏎️' },
-    { channel: 'Vroom Vroom Guides', title: 'F1 Strategy Explained', views: '401K', date: '1w ago', thumbnail: '📚' },
-    { channel: 'Auto Bild', title: 'Next Generation Drivers', views: '334K', date: '5d ago', thumbnail: '🎬' },
-    { channel: 'Beyond the Grid', title: 'Podcast: The Story So Far', views: '287K', date: '3d ago', thumbnail: '🎙️' },
-    { channel: 'Harris F1', title: 'Championship Predictions', views: '412K', date: '1w ago', thumbnail: '📺' },
-    { channel: 'The Race', title: 'Live Race Commentary', views: '556K', date: '2d ago', thumbnail: '🏁' },
-    { channel: 'Pit Wall Pass', title: 'Qualifying Analysis', views: '223K', date: '3d ago', thumbnail: '🎯' },
-    { channel: 'OnboardTV', title: 'World Record Lap', views: '478K', date: '1w ago', thumbnail: '🎥' },
-    { channel: 'Tavi F1 Insights', title: 'Driver Mental Edge', views: '351K', date: '4d ago', thumbnail: '💬' },
-    { channel: 'Speed Matters', title: 'Aerodynamics Mastery', views: '289K', date: '5d ago', thumbnail: '⚡' }
+    { channel: 'Aidan Millward', title: 'F1 2026 Season Preview', views: '512K', date: '3d ago', thumbnail: '🎯', link: 'https://www.youtube.com/@AidanMillward' },
+    { channel: 'Max Tech', title: 'New Car Tech Breakdown', views: '428K', date: '1w ago', thumbnail: '⚡', link: 'https://www.youtube.com/@MaxTechF1' },
+    { channel: 'Lando Norris', title: 'Behind the Scenes at McLaren', views: '689K', date: '2d ago', thumbnail: '🚀', link: 'https://www.youtube.com/@LandoNorris' },
+    { channel: 'Automobilista Gaming', title: 'Sim Racing Challenge', views: '334K', date: '5d ago', thumbnail: '🎮', link: 'https://www.youtube.com/@automobilistagaming' },
+    { channel: 'Top Gear', title: 'F1 Legends Interview Series', views: '521K', date: '4d ago', thumbnail: '🏁', link: 'https://www.youtube.com/@TopGear' },
+    { channel: 'Clips Explained', title: 'Best Overtakes Explained', views: '267K', date: '2d ago', thumbnail: '📹', link: 'https://www.youtube.com/@ClipsExplained' },
+    { channel: 'TheMo Plays', title: 'F1 Game Season 43', views: '189K', date: '1d ago', thumbnail: '🎮', link: 'https://www.youtube.com/@TheaMoPlaysi' },
+    { channel: 'Formula 1 Analysis', title: 'Championship Math', views: '298K', date: '3d ago', thumbnail: '📈', link: 'https://www.youtube.com/results?search_query=F1+2026+championship' },
+    { channel: 'Legends F1', title: 'Senna vs Prost: Who Won?', views: '621K', date: '6d ago', thumbnail: '👑', link: 'https://www.youtube.com/@LegendsF1' },
+    { channel: 'F1 Garage', title: 'Pit Stop Precision', views: '176K', date: '4d ago', thumbnail: '🔧', link: 'https://www.youtube.com/@F1Garage' },
+    { channel: 'Real Racing', title: 'Data Analysis Deep Dive', views: '245K', date: '2w ago', thumbnail: '🏎️', link: 'https://www.youtube.com/@RealRacing' },
+    { channel: 'Vroom Vroom Guides', title: 'F1 Strategy Explained', views: '401K', date: '1w ago', thumbnail: '📚', link: 'https://www.youtube.com/@VroomVroomGuides' },
+    { channel: 'Auto Bild', title: 'Next Generation Drivers', views: '334K', date: '5d ago', thumbnail: '🎬', link: 'https://www.youtube.com/@AutoBildTV' },
+    { channel: 'Beyond the Grid', title: 'Podcast: The Story So Far', views: '287K', date: '3d ago', thumbnail: '🎙️', link: 'https://www.youtube.com/@BeyondTheGrid' },
+    { channel: 'Harris F1', title: 'Championship Predictions', views: '412K', date: '1w ago', thumbnail: '📺', link: 'https://www.youtube.com/@HarrisF1' },
+    { channel: 'The Race', title: 'Live Race Commentary', views: '556K', date: '2d ago', thumbnail: '🏁', link: 'https://www.youtube.com/@TheRaceF1' },
+    { channel: 'OnboardTV', title: 'World Record Lap', views: '478K', date: '1w ago', thumbnail: '🎥', link: 'https://www.youtube.com/@OnboardTV' },
+    { channel: 'Tavi F1 Insights', title: 'Driver Mental Edge', views: '351K', date: '4d ago', thumbnail: '💬', link: 'https://www.youtube.com/@TaviF1' },
+    { channel: 'Speed Matters', title: 'Aerodynamics Mastery', views: '289K', date: '5d ago', thumbnail: '⚡', link: 'https://www.youtube.com/@SpeedMatters' },
+    { channel: 'Pit Wall Pass', title: 'Qualifying Analysis', views: '223K', date: '3d ago', thumbnail: '🎯', link: 'https://www.youtube.com/results?search_query=F1+qualifying' }
   ];
 
+  const escapeHtml = (value) => String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+
   const createVideoCard = (video) => `
-    <a class="youtube-card" href="${escapeHtml(video.link || `https://www.youtube.com/results?search_query=${encodeURIComponent(`${video.channel || ''} ${video.title || ''}`.trim())}`)}" target="_blank" rel="noopener noreferrer">
+    <a class="youtube-card" href="${escapeHtml(video.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(video.title)}">
       <div class="youtube-thumbnail">
-        ${String(video.thumbnail || '').match(/^https?:\/\//i)
-          ? `<img src="${escapeHtml(video.thumbnail)}" alt="${escapeHtml(video.title)}" loading="lazy" decoding="async">`
-          : `<div class="youtube-fallback">${escapeHtml(video.thumbnail || '▶')}<small>${escapeHtml(video.channel || 'F1 Video')}</small></div>`}
+        <div class="youtube-fallback">${escapeHtml(video.thumbnail || '▶')}<small>${escapeHtml(video.channel || 'F1 Video')}</small></div>
         <div class="youtube-play-button">▶</div>
       </div>
       <div class="youtube-title">${escapeHtml(video.title)}</div>
       <div class="youtube-channel">${escapeHtml(video.channel)}</div>
       <div class="youtube-stats">
-        <span>Latest upload</span>
-        <span>${escapeHtml(video.date)}</span>
+        <span>${escapeHtml(video.views || '')}</span>
+        <span>${escapeHtml(video.date || 'Recently')}</span>
       </div>
     </a>
   `;
 
-  async function fetchChannelVideos(channelList, channelsToUse, videosPerChannel) {
+  async function fetchChannelVideos(channelList, channelsToUse, videosPerChannel, timeout = 3000) {
     const videos = [];
-    for (const channel of channelList.slice(0, channelsToUse)) {
+    const fetchPromises = channelList.slice(0, channelsToUse).map(async (channel) => {
       try {
         const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel.id}`;
-        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`);
+        const controller = new AbortController();
+        const timeId = setTimeout(() => controller.abort(), timeout);
+        
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`, {
+          signal: controller.signal
+        });
+        clearTimeout(timeId);
+        
         const data = await response.json();
-        if (!data.contents) continue;
+        if (!data.contents) return null;
 
         const doc = new DOMParser().parseFromString(data.contents, 'text/xml');
         const entries = [...doc.querySelectorAll('entry')].slice(0, videosPerChannel);
-        entries.forEach((entry) => {
-          const title = entry.querySelector('title')?.textContent || 'Untitled';
-          const link = entry.querySelector('link')?.getAttribute('href') || '#';
-          const publishedAt = entry.querySelector('published')?.textContent || '';
-          const thumbnail = entry.querySelector('media\\:thumbnail')?.getAttribute('url') || entry.querySelector('thumbnail')?.getAttribute('url') || '';
-          const date = publishedAt ? new Date(publishedAt).toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'Fresh';
-          videos.push({
-            title: title.substring(0, 72),
+        
+        return entries.map((entry) => {
+          const title = entry.querySelector('title')?.textContent || 'Latest Video';
+          const link = entry.querySelector('link')?.getAttribute('href') || `https://www.youtube.com/@${channel.id}`;
+          const publishedAt = entry.querySelector('published')?.textContent || new Date().toISOString();
+          const date = publishedAt ? (() => {
+            const d = new Date(publishedAt);
+            const now = new Date();
+            const diffMs = now - d;
+            const diffDays = Math.floor(diffMs / 86400000);
+            if (diffDays === 0) return 'Today';
+            if (diffDays === 1) return '1d ago';
+            if (diffDays < 7) return `${diffDays}d ago`;
+            if (diffDays < 30) return `${Math.floor(diffDays/7)}w ago`;
+            return `${Math.floor(diffDays/30)}m ago`;
+          })() : 'Fresh';
+          
+          return {
+            title: title.substring(0, 66),
             channel: channel.name,
             link,
-            thumbnail,
-            date
-          });
+            date,
+            thumbnail: '📺'
+          };
         });
       } catch (error) {
-        console.log(`Skipping channel ${channel.name}`);
+        return null;
       }
-    }
+    });
+
+    const results = await Promise.all(fetchPromises);
+    results.forEach(vids => {
+      if (vids && Array.isArray(vids)) videos.push(...vids);
+    });
+    
     return videos;
   }
 
   async function populateVideoSection(containerId, channelList, channelsToUse, videosPerChannel, fallbackVideos) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    const videos = await fetchChannelVideos(channelList, channelsToUse, videosPerChannel);
-    const cards = videos.length ? videos : fallbackVideos;
-    if (!cards.length) return;
-    container.innerHTML = cards.map(createVideoCard).join('');
+    
+    try {
+      const videos = await Promise.race([
+        fetchChannelVideos(channelList, channelsToUse, videosPerChannel),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
+      ]);
+      
+      const cards = videos && videos.length > 0 ? videos : fallbackVideos;
+      container.innerHTML = cards.slice(0, 8).map(createVideoCard).join('');
+    } catch (error) {
+      // Use fallback on any error
+      container.innerHTML = fallbackVideos.slice(0, 8).map(createVideoCard).join('');
+    }
   }
 
-  populateVideoSection('racingChannelsGrid', RACING_CHANNELS, 4, 2, RACING_VIDEOS);
-  populateVideoSection('f1YouTubersGrid', TOP_F1_YOUTUBERS, 6, 2, F1_YOUTUBER_VIDEOS);
+  // Populate after a short delay to allow DOM to be ready
+  setTimeout(() => {
+    populateVideoSection('racingChannelsGrid', RACING_CHANNELS, 4, 2, RACING_VIDEOS);
+    populateVideoSection('f1YouTubersGrid', TOP_F1_YOUTUBERS, 6, 2, F1_YOUTUBER_VIDEOS);
+  }, 100);
 })();
 </script>
 
