@@ -4,6 +4,8 @@ The Pit Wall is a personal Formula 1 dashboard built as a static site with vanil
 
 Live site: https://n.sar-brawlstars.workers.dev
 
+Demo: https://n.sar-brawlstars.workers.dev/
+
 Repository: https://github.com/sarang-cmd/sarang.s-pit-wall
 
 ## What It Includes
