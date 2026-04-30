@@ -277,7 +277,7 @@
         state.filtered = filtered;
         statShown.textContent = String(filtered.length);
         statUpdated.textContent = filtered.length ? timeAgo(filtered[0].publishedAt) : '--';
-        listMeta.textContent = `${filtered.length} story${filtered.length === 1 ? '' : 's'} shown out of ${state.articles.length}. Scroll the list for more, or narrow it with the filters above.`;
+        listMeta.textContent = `${filtered.length} ${filtered.length === 1 ? 'story' : 'stories'} shown out of ${state.articles.length}. Scroll the list for more, or narrow it with the filters above.`;
 
         if (!filtered.length) {
           newsList.innerHTML = `<div class="empty">No stories match the current filter set. Try another category, a different source, or clear the search field.</div>`;
